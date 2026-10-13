@@ -1,9 +1,13 @@
 package saka1029.form;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Factor {
 
-    public final List<Power> powers = new ArrayList<>();
+    public final int power;
+    public final Primary primary;
+
+    public Factor(int power, Primary primary) {
+        this.power = power;
+        this.primary = primary;
+    }
+
 }

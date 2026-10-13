@@ -1,9 +1,10 @@
 package saka1029.form;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Expr {
+public class Expr implements Primary {
 
-    List<Term> terms;
+    public final List<Term> terms = new ArrayList<>();
 
 }
