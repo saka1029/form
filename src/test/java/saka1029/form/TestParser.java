@@ -46,9 +46,31 @@ public class TestParser {
     }
 
     @Test
-    public void testTerm2() {
+    public void testTermMinus() {
         assertEquals(
             new Polynomial(List.of(
                 new Term(-7, List.of()))), parse("-7"));
+    }
+
+    @Test
+    public void testPolynomial() {
+        assertEquals(
+            new Polynomial(List.of(
+                new Term(1, List.of(
+                    new Factor(1,
+                        new Variable("a")))),
+                new Term(1, List.of(
+                    new Factor(1,
+                        new Variable("b")))))), parse("a+b"));
+        assertEquals(
+            new Polynomial(List.of(
+                new Term(1, List.of(
+                    new Factor(1,
+                        new Variable("a")))),
+                new Term(3, List.of(
+                    new Factor(1,
+                        new Variable("b")),
+                    new Factor(1,
+                        new Variable("c")))))), parse("a+3bc"));
     }
 }
