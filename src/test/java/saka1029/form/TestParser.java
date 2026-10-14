@@ -44,4 +44,11 @@ public class TestParser {
             new Polynomial(List.of(
                 new Term(7, List.of()))), parse("7"));
     }
+
+    @Test
+    public void testTerm2() {
+        assertEquals(
+            new Polynomial(List.of(
+                new Term(-7, List.of()))), parse("-7"));
+    }
 }

@@ -17,7 +17,6 @@ class Factor {
 class Variable {
     String name
 }
-ExprNegate .up.|> Expression
 ExprBinary .up.|> Expression
 ExprPlus -up-|> ExprBinary
 ExprMinus -up-|> ExprBinary

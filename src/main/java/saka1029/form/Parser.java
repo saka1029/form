@@ -72,7 +72,7 @@ public class Parser {
         return Character.isAlphabetic(ch);
     }
 
-    int readNumber() {
+    int parseNumber() {
         sb.setLength(0);
         while (isDigit(ch)) {
             sb.appendCodePoint(ch);
@@ -81,13 +81,13 @@ public class Parser {
         return Integer.parseInt(sb.toString());
     }
 
-    Primary readPrimary() {
+    Primary parsePrimary() {
         if (isVariable(ch)) {
             String variable = Character.toString(ch);
             get();
             return new Variable(variable);
         } else if (eat('(')) {
-            Primary result = readPolynomial();
+            Primary result = parsePolynomial();
             if (!eat(')'))
                 throw new FormException(("')' expected"));
             return result;
@@ -95,54 +95,54 @@ public class Parser {
             throw new FormException(("variable or '(' expected"));
     }
 
-    Factor readFactor() {
+    Factor parseFactor() {
         spaces();
         int power = 1;
-        Primary primary = readPrimary();
+        Primary primary = parsePrimary();
         if (eat('^')) {
             spaces();
             if (!isDigit(ch))
                 throw new FormException("digit expected");
-            power = readNumber();
+            power = parseNumber();
         }
         return new Factor(power, primary);
     }
 
-    Term readTerm(int k) {
+    Term parseTerm(int k) {
         spaces();
         if (isDigit(ch))
-            k *= readNumber();
+            k *= parseNumber();
         Term result = new Term(k);
         while (isVariable(ch) || ch == '(')
-            result.factors.add(readFactor());
+            result.factors.add(parseFactor());
         return result;
     }
 
-    Polynomial readPolynomial() {
+    Polynomial parsePolynomial() {
         spaces();
         Polynomial result = new Polynomial();
         int sign = 1;
         if (eat('-'))
             sign = -1;
-        result.terms.add(readTerm(sign));
+        result.terms.add(parseTerm(sign));
         while (true)
             if (eat('+'))
-                result.terms.add(readTerm(1));
+                result.terms.add(parseTerm(1));
             else if (eat('-'))
-                result.terms.add(readTerm(-1));
+                result.terms.add(parseTerm(-1));
             else
                 break;
         return result;
     }
 
-    Expression readExprMult() {
+    Expression parseExprMult() {
         spaces();
-        Expression result = readPolynomial();
+        Expression result = parsePolynomial();
         while (true)
             if (isVariable(ch) || isDigit(ch) || ch == ')')
-                result = new ExprMult(result, readPolynomial());
+                result = new ExprMult(result, parsePolynomial());
             else if (eat('/'))
-                result = new ExprDivide(result, readPolynomial());
+                result = new ExprDivide(result, parsePolynomial());
             else
                 break;
         return result;
@@ -151,17 +151,12 @@ public class Parser {
 
     public Expression read() {
         spaces();
-        boolean negate = false;
-        if (eat('-'))
-            negate = true;
-        Expression result = readExprMult();
-        if (negate)
-            result = new ExprNegate(result);
+        Expression result = parseExprMult();
         while (true)
             if (eat('+'))
-                result = new ExprPlus(result, readExprMult());
+                result = new ExprPlus(result, parseExprMult());
             else if (eat('-'))
-                result = new ExprMinus(result, readExprMult());
+                result = new ExprMinus(result, parseExprMult());
             else
                 break;
         return result;
