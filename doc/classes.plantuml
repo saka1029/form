@@ -1,7 +1,6 @@
 @startuml form
 interface Expression
 class ExprBinary
-class ExprNegate
 class ExprPlus
 class ExprMinus
 class ExprMult
@@ -25,7 +24,6 @@ ExprDivide -up-|> ExprBinary
 Primary -up-|> Expression
 Polynomial .up.|> Primary
 Variable .up.|> Primary
-ExprNegate --> Expression : expr
 ExprBinary --> Expression : left
 ExprBinary --> Expression : right
 Polynomial --> "*" Term
