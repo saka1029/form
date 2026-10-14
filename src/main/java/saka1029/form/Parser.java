@@ -3,7 +3,6 @@ package saka1029.form;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.Arrays;
 
 /**
  * expression = expr-mult { ( '+' | '-' ) expr-mult }
@@ -15,39 +14,8 @@ import java.util.Arrays;
  */
 public class Parser {
 
-    static class CodePointBuffer {
-        int[] buffer;
-        int next = 0;
-
-        public CodePointBuffer() { this.buffer = new int[64]; }
-
-        public void append(int cp) {
-            if (next >= buffer.length)
-                buffer = Arrays.copyOf(buffer, buffer.length * 2);
-            buffer[next++] = cp;
-        }
-
-        int pop() { return buffer[--next]; }
-
-        public void clear() { next = 0; }
-
-        public void clearButLast() {
-            int last = pop();
-            next = 0;
-            append(last);
-        }
-
-        public String stringButLast() {
-            int last = pop();
-            String s = new String(buffer, 0, next);
-            next = 0;
-            append(last);
-            return s;
-        }
-    }
-
-    final CodePointBuffer buffer = new CodePointBuffer();
     final Reader reader;
+    final StringBuilder sb = new StringBuilder();
     int ch;
 
     public Parser(Reader reader) {
@@ -56,7 +24,7 @@ public class Parser {
     }
     public Parser(String source) {
         this(new StringReader(source));
-        buffer.clearButLast();
+        // buffer.clearButLast();
     }
 
     int readCodePoint() throws IOException {
@@ -76,7 +44,6 @@ public class Parser {
     int get() {
         try {
             ch = readCodePoint();
-            buffer.append(ch);
             return ch;
         } catch (IOException e) {
             throw new FormException(e);
@@ -91,7 +58,6 @@ public class Parser {
     boolean eat(int test) {
         spaces();
         if (ch == test) {
-            buffer.clear();
             get();
             return true;
         }
@@ -107,15 +73,19 @@ public class Parser {
     }
 
     int readNumber() {
-        while (isDigit(ch))
+        sb.setLength(0);
+        while (isDigit(ch)) {
+            sb.appendCodePoint(ch);
             get();
-        return Integer.parseInt(buffer.stringButLast());
+        }
+        return Integer.parseInt(sb.toString());
     }
 
     Primary readPrimary() {
         if (isVariable(ch)) {
+            String variable = Character.toString(ch);
             get();
-            return new Variable(buffer.stringButLast());
+            return new Variable(variable);
         } else if (eat('(')) {
             Primary result = readPolynomial();
             if (!eat(')'))
@@ -197,7 +167,4 @@ public class Parser {
                 break;
         return result;
     }
-
-
-
 }
