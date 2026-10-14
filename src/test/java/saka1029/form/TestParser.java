@@ -22,10 +22,15 @@ public class TestParser {
         assertEquals(
             new Polynomial(List.of(
                 new Term(1, List.of(
-                    new Factor(1,
+                    new Factor(2,
+                        new Variable("a")))))), parse("a^2"));
+        assertEquals(
+            new Polynomial(List.of(
+                new Term(1, List.of(
+                    new Factor(3,
                         new Variable("a")),
-                    new Factor(1,
-                        new Variable("b")))))), parse("ab"));
+                    new Factor(4,
+                        new Variable("b")))))), parse("a^3b^4"));
     }
 
 }

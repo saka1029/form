@@ -8,6 +8,11 @@ public class ExprNegate implements Expression {
         this.expr = expr;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof ExprNegate x
+            && x.expr.equals(expr);
+    }
 
     @Override
     public String toString() {

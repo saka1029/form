@@ -17,15 +17,15 @@ class Factor {
 class Variable {
     String name
 }
-ExprNegate ..|> Expression
-ExprBinary ..|> Expression
-ExprPlus --|> ExprBinary
-ExprMinus --|> ExprBinary
-ExprMult --|> ExprBinary
-ExprDivide --|> ExprBinary
-Primary --|> Expression
-Polynomial ..|> Primary
-Variable ..|> Primary
+ExprNegate .up.|> Expression
+ExprBinary .up.|> Expression
+ExprPlus -up-|> ExprBinary
+ExprMinus -up-|> ExprBinary
+ExprMult -up-|> ExprBinary
+ExprDivide -up-|> ExprBinary
+Primary -up-|> Expression
+Polynomial .up.|> Primary
+Variable .up.|> Primary
 ExprNegate --> Expression : expr
 ExprBinary --> Expression : left
 ExprBinary --> Expression : right

@@ -91,6 +91,7 @@ public class Parser {
     boolean eat(int test) {
         spaces();
         if (ch == test) {
+            buffer.clear();
             get();
             return true;
         }
