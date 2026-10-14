@@ -113,7 +113,6 @@ public class Parser {
         if (isDigit(ch))
             k *= readNumber();
         Term result = new Term(k);
-        result.factors.add(readFactor());
         while (isVariable(ch) || ch == '(')
             result.factors.add(readFactor());
         return result;
