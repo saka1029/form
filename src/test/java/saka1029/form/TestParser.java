@@ -42,8 +42,6 @@ public class TestParser {
                         new Variable("a")))))), parse("5a"));
         assertEquals(
             new Polynomial(List.of(
-                new Term(5, List.of(
-                    new Factor(4,
-                        new Variable("a")))))), parse("5a^4"));
+                new Term(7, List.of()))), parse("7"));
     }
 }
