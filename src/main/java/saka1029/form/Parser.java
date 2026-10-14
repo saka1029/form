@@ -169,7 +169,7 @@ public class Parser {
         spaces();
         Expression result = readPolynomial();
         while (true)
-            if (eat('*'))
+            if (isVariable(ch) || isDigit(ch) || ch == ')')
                 result = new ExprMult(result, readPolynomial());
             else if (eat('/'))
                 result = new ExprDivide(result, readPolynomial());

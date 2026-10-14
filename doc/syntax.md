@@ -2,7 +2,7 @@
 
 ```
  expression = [ '-' ] expr-mult { ( '+' | '-' ) expr-mult }
- expr-mult  = polynomial { ( '*' | '/' ) polynomial }
+ expr-mult  = polynomial { [ '/' ] polynomial }
  polynomial = term { ( '+' | '-' ) term }
  term       = [ int ] factor { '*' factor }
  factor     = primary [ '^' int ] 
