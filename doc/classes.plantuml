@@ -1,0 +1,35 @@
+@startuml form
+interface Expression
+class ExprBinary
+class ExprNegate
+class ExprPlus
+class ExprMinus
+class ExprMult
+class ExprDivide
+interface Primary
+class Polynomial
+class Term {
+    int coefficient
+}
+class Factor {
+    int power
+}
+class Variable {
+    String name
+}
+ExprNegate ..|> Expression
+ExprBinary ..|> Expression
+ExprPlus --|> ExprBinary
+ExprMinus --|> ExprBinary
+ExprMult --|> ExprBinary
+ExprDivide --|> ExprBinary
+Primary --|> Expression
+Polynomial ..|> Primary
+Variable ..|> Primary
+ExprNegate --> Expression : expr
+ExprBinary --> Expression : left
+ExprBinary --> Expression : right
+Polynomial --> "*" Term
+Term --> "*" Factor
+Factor -->  "*"Primary
+@enduml

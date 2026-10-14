@@ -8,4 +8,9 @@ public class ExprNegate implements Expression {
         this.expr = expr;
     }
 
+
+    @Override
+    public String toString() {
+        return "-" + expr;
+    }
 }
