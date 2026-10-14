@@ -1,5 +1,5 @@
 package saka1029.form;
 
-public interface Primary {
+public interface Primary extends Expression {
 
 }
