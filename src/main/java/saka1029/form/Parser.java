@@ -143,11 +143,8 @@ public class Parser {
             k *= readNumber();
         Term result = new Term(k);
         result.factors.add(readFactor());
-        while (true)
-            if (eat('*'))
-                result.factors.add(readFactor());
-            else
-                break;
+        while (isVariable(ch) || ch == '(')
+            result.factors.add(readFactor());
         return result;
     }
 
@@ -184,7 +181,12 @@ public class Parser {
 
     public Expression read() {
         spaces();
+        boolean negate = false;
+        if (eat('-'))
+            negate = true;
         Expression result = readExprMult();
+        if (negate)
+            result = new ExprNegate(result);
         while (true)
             if (eat('+'))
                 result = new ExprPlus(result, readExprMult());
