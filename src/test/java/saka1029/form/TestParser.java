@@ -33,4 +33,17 @@ public class TestParser {
                         new Variable("b")))))), parse("a^3b^4"));
     }
 
+    @Test 
+    public void testTerm() {
+        assertEquals(
+            new Polynomial(List.of(
+                new Term(5, List.of(
+                    new Factor(1,
+                        new Variable("a")))))), parse("5a"));
+        assertEquals(
+            new Polynomial(List.of(
+                new Term(5, List.of(
+                    new Factor(4,
+                        new Variable("a")))))), parse("5a^4"));
+    }
 }
