@@ -5,7 +5,7 @@
  expr-mult  = polynomial { [ '/' ] polynomial }
  polynomial = term { ( '+' | '-' ) term }
  term       = [ int ] { factor }
- factor     = primary [ '^' int ] 
+ factor     = primary [ '^' int ]
  primary    = variable | '(' polynomial ')'
 ```
 
