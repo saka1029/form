@@ -5,7 +5,7 @@ public class ExprBinary implements Expression {
     public enum Op {
         PLUS(" + "),
         MINUS(" - "),
-        MULT(" "),
+        MULTIPLY(" "),
         DIVIDE(" / ");
         
         public final String name;

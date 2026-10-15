@@ -142,7 +142,7 @@ public class Parser {
         Expression result = parsePolynomial();
         while (true)
             if (isVariable(ch) || isDigit(ch) || ch == ')')
-                result = new ExprBinary(Op.MULT, result, parseExprMult());
+                result = new ExprBinary(Op.MULTIPLY, result, parseExprMult());
             else if (eat('/'))
                 result = new ExprBinary(Op.DIVIDE, result, parseExprMult());
             else

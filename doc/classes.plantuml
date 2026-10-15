@@ -5,7 +5,7 @@ interface Expression {
 enum Op {
     PLUS
     MINUS
-    MULT
+    MULTIPLY
     DIVIDE
 }
 class ExprBinary {
