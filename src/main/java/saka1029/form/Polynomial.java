@@ -30,11 +30,11 @@ public class Polynomial implements Primary {
     public Polynomial reduce() {
         Map<List<Factor>, Integer> newTerms = new LinkedHashMap<>();
         for (Term term : terms) {
-            Integer newCoefficient = newTerms.get(term.factors);
-            if (newCoefficient == null)
-                newCoefficient = 0;
-            newCoefficient += term.coefficient;
-            newTerms.put(term.factors, newCoefficient);
+            Integer coefficient = newTerms.get(term.factors);
+            if (coefficient == null)
+                coefficient = 0;
+            coefficient += term.coefficient;
+            newTerms.put(term.factors, coefficient);
         }
         return new Polynomial(newTerms.entrySet().stream()
             .map(e -> new Term(e.getValue(), e.getKey()))
