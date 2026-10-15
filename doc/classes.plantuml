@@ -1,5 +1,7 @@
 @startuml form
-interface Expression
+interface Expression {
+    Expression reduce()
+}
 enum Op {
     PLUS
     MINUS
