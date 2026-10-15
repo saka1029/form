@@ -3,6 +3,7 @@ package saka1029.form;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,14 +17,6 @@ public class Polynomial implements Primary {
 
     public Polynomial() {
         this(new LinkedHashSet<>());
-    }
-
-    void addTerm(Map<Set<Factor>, Integer> newTerms, Term term) {
-        Integer newCoefficient = newTerms.get(term.factors);
-        if (newCoefficient == null)
-            newCoefficient = 0;
-        newCoefficient += term.coefficient;
-        newTerms.put(term.factors, newCoefficient);
     }
 
     @Override
@@ -45,6 +38,11 @@ public class Polynomial implements Primary {
     public boolean equals(Object obj) {
         return obj instanceof Polynomial p
             && p.terms.equals(terms);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(terms);
     }
 
     @Override

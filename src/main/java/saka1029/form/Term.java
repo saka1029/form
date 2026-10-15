@@ -19,11 +19,11 @@ public class Term {
         this(coefficient, new LinkedHashSet<>());
     }
 
+    // @Override
     public Term expand() {
         return new Term(coefficient, factors.stream()
             .map(x -> x.expand())
             .collect(Collectors.toSet()));
-
     }
 
     @Override

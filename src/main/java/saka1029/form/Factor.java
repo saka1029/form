@@ -12,6 +12,7 @@ public class Factor {
         this.primary = primary;
     }
 
+    // @Override
     public Factor expand() {
         return new Factor(power, primary.expand());
     }
