@@ -26,7 +26,12 @@ public class ExprBinary implements Expression {
 
     @Override
     public Expression expand() {
-        return new ExprBinary(operator, left.expand(), right.expand());
+        return switch (operator) {
+            case PLUS ->
+                new ExprBinary(operator, left.expand(), right.expand());
+            default ->
+                new ExprBinary(operator, left.expand(), right.expand());
+        };
     }
 
     @Override
