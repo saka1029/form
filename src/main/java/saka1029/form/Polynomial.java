@@ -1,7 +1,9 @@
 package saka1029.form;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Polynomial implements Primary {
@@ -14,6 +16,29 @@ public class Polynomial implements Primary {
 
     public Polynomial() {
         this(new ArrayList<>());
+    }
+
+    void addTerm(Map<List<Factor>, Integer> newTerms, Term term) {
+        Integer newCoefficient = newTerms.get(term.factors);
+        if (newCoefficient == null)
+            newCoefficient = 0;
+        newCoefficient += term.coefficient;
+        newTerms.put(term.factors, newCoefficient);
+    }
+
+    @Override
+    public Polynomial reduce() {
+        Map<List<Factor>, Integer> newTerms = new LinkedHashMap<>();
+        for (Term term : terms) {
+            Integer newCoefficient = newTerms.get(term.factors);
+            if (newCoefficient == null)
+                newCoefficient = 0;
+            newCoefficient += term.coefficient;
+            newTerms.put(term.factors, newCoefficient);
+        }
+        return new Polynomial(newTerms.entrySet().stream()
+            .map(e -> new Term(e.getValue(), e.getKey()))
+            .toList());
     }
 
     @Override

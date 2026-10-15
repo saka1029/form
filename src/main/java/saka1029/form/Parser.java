@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
+import saka1029.form.ExprBinary.Op;
+
 /**
  * expression = expr-mult { ( '+' | '-' ) expr-mult }
  * expr-mult  = polynomial { ( '*' | '/' ) polynomial }
@@ -140,9 +142,9 @@ public class Parser {
         Expression result = parsePolynomial();
         while (true)
             if (isVariable(ch) || isDigit(ch) || ch == ')')
-                result = new ExprMult(result, parsePolynomial());
+                result = new ExprBinary(Op.MULT, result, parseExprMult());
             else if (eat('/'))
-                result = new ExprDivide(result, parsePolynomial());
+                result = new ExprBinary(Op.DIVIDE, result, parseExprMult());
             else
                 break;
         return result;
@@ -154,9 +156,9 @@ public class Parser {
         Expression result = parseExprMult();
         while (true)
             if (eat('+'))
-                result = new ExprPlus(result, parseExprMult());
+                result = new ExprBinary(Op.PLUS, result, parseExprMult());
             else if (eat('-'))
-                result = new ExprMinus(result, parseExprMult());
+                result = new ExprBinary(Op.MINUS, result, parseExprMult());
             else
                 break;
         return result;

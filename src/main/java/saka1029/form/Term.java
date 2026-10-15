@@ -18,6 +18,13 @@ public class Term {
         this(coefficient, new ArrayList<>());
     }
 
+    public Term reduce() {
+        return new Term(coefficient, factors.stream()
+            .map(x -> x.reduce())
+            .toList());
+
+    }
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Term t

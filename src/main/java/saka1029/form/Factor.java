@@ -10,6 +10,10 @@ public class Factor {
         this.primary = primary;
     }
 
+    public Factor reduce() {
+        return new Factor(power, primary.reduce());
+    }
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Factor f

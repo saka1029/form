@@ -16,6 +16,10 @@ public class Variable implements Primary {
         return all.computeIfAbsent(name, k -> new Variable(name));
     }
 
+    public Variable reduce() {
+        return this;
+    }
+
     @Override
     public String toString() {
         return name;
