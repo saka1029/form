@@ -18,19 +18,19 @@ public class TestParser {
             new Polynomial(List.of(
                 new Term(1, List.of(
                     new Factor(1,
-                        new Variable("a")))))), parse("a"));
+                        Variable.of("a")))))), parse("a"));
         assertEquals(
             new Polynomial(List.of(
                 new Term(1, List.of(
                     new Factor(2,
-                        new Variable("a")))))), parse("a^2"));
+                        Variable.of("a")))))), parse("a^2"));
         assertEquals(
             new Polynomial(List.of(
                 new Term(1, List.of(
                     new Factor(3,
-                        new Variable("a")),
+                        Variable.of("a")),
                     new Factor(4,
-                        new Variable("b")))))), parse("a^3b^4"));
+                        Variable.of("b")))))), parse("a^3b^4"));
     }
 
     @Test 
@@ -39,7 +39,7 @@ public class TestParser {
             new Polynomial(List.of(
                 new Term(5, List.of(
                     new Factor(1,
-                        new Variable("a")))))), parse("5a"));
+                        Variable.of("a")))))), parse("5a"));
         assertEquals(
             new Polynomial(List.of(
                 new Term(7, List.of()))), parse("7"));
@@ -58,19 +58,19 @@ public class TestParser {
             new Polynomial(List.of(
                 new Term(1, List.of(
                     new Factor(1,
-                        new Variable("a")))),
+                        Variable.of("a")))),
                 new Term(1, List.of(
                     new Factor(1,
-                        new Variable("b")))))), parse("a+b"));
+                        Variable.of("b")))))), parse("a+b"));
         assertEquals(
             new Polynomial(List.of(
                 new Term(1, List.of(
                     new Factor(1,
-                        new Variable("a")))),
+                        Variable.of("a")))),
                 new Term(3, List.of(
                     new Factor(1,
-                        new Variable("b")),
+                        Variable.of("b")),
                     new Factor(1,
-                        new Variable("c")))))), parse("a+3bc"));
+                        Variable.of("c")))))), parse("a+3bc"));
     }
 }

@@ -85,7 +85,7 @@ public class Parser {
         if (isVariable(ch)) {
             String variable = Character.toString(ch);
             get();
-            return new Variable(variable);
+            return Variable.of(variable);
         } else if (eat('(')) {
             Primary result = parsePolynomial();
             if (!eat(')'))
