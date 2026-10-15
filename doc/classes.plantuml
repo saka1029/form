@@ -1,10 +1,14 @@
 @startuml form
 interface Expression
-class ExprBinary
-class ExprPlus
-class ExprMinus
-class ExprMult
-class ExprDivide
+enum Op {
+    PLUS
+    MINUS
+    MULT
+    DIVIDE
+}
+class ExprBinary {
+    Op oprator
+}
 interface Primary
 class Polynomial
 class Term {
@@ -17,10 +21,6 @@ class Variable {
     String name
 }
 ExprBinary .up.|> Expression
-ExprPlus -up-|> ExprBinary
-ExprMinus -up-|> ExprBinary
-ExprMult -up-|> ExprBinary
-ExprDivide -up-|> ExprBinary
 Primary -up-|> Expression
 Polynomial .up.|> Primary
 Variable .up.|> Primary
