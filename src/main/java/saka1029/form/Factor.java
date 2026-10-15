@@ -1,5 +1,7 @@
 package saka1029.form;
 
+import java.util.Objects;
+
 public class Factor {
 
     public final int power;
@@ -19,6 +21,11 @@ public class Factor {
         return obj instanceof Factor f
             && f.power == power
             && f.primary.equals(primary);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(power, primary);
     }
 
     @Override

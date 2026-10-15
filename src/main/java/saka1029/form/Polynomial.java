@@ -1,24 +1,24 @@
 package saka1029.form;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Polynomial implements Primary {
 
-    public final List<Term> terms;
+    public final Set<Term> terms;
 
-    public Polynomial(List<Term> terms) {
+    public Polynomial(Set<Term> terms) {
         this.terms = terms;
     }
 
     public Polynomial() {
-        this(new ArrayList<>());
+        this(new LinkedHashSet<>());
     }
 
-    void addTerm(Map<List<Factor>, Integer> newTerms, Term term) {
+    void addTerm(Map<Set<Factor>, Integer> newTerms, Term term) {
         Integer newCoefficient = newTerms.get(term.factors);
         if (newCoefficient == null)
             newCoefficient = 0;
@@ -28,7 +28,7 @@ public class Polynomial implements Primary {
 
     @Override
     public Polynomial reduce() {
-        Map<List<Factor>, Integer> newTerms = new LinkedHashMap<>();
+        Map<Set<Factor>, Integer> newTerms = new LinkedHashMap<>();
         for (Term term : terms) {
             Integer coefficient = newTerms.get(term.factors);
             if (coefficient == null)
@@ -38,7 +38,7 @@ public class Polynomial implements Primary {
         }
         return new Polynomial(newTerms.entrySet().stream()
             .map(e -> new Term(e.getValue(), e.getKey()))
-            .toList());
+            .collect(Collectors.toSet()));
     }
 
     @Override

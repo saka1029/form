@@ -1,27 +1,28 @@
 package saka1029.form;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Term {
 
     public final int coefficient;
-    public final List<Factor> factors;
+    public final Set<Factor> factors;
 
-    public Term(int coefficient, List<Factor> factors) {
+    public Term(int coefficient, Set<Factor> factors) {
         this.coefficient = coefficient;
         this.factors = factors;
     }
 
     public Term(int coefficient) {
-        this(coefficient, new ArrayList<>());
+        this(coefficient, new LinkedHashSet<>());
     }
 
     public Term reduce() {
         return new Term(coefficient, factors.stream()
             .map(x -> x.reduce())
-            .toList());
+            .collect(Collectors.toSet()));
 
     }
 
@@ -30,6 +31,11 @@ public class Term {
         return obj instanceof Term t
             && t.coefficient == coefficient
             && t.factors.equals(factors);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(coefficient, factors);
     }
 
     @Override
