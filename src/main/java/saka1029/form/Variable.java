@@ -16,7 +16,7 @@ public class Variable implements Primary {
         return all.computeIfAbsent(name, k -> new Variable(name));
     }
 
-    public Variable reduce() {
+    public Variable expand() {
         return this;
     }
 

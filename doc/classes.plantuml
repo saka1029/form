@@ -1,6 +1,6 @@
 @startuml form
 interface Expression {
-    Expression reduce()
+    Expression expand()
 }
 enum Op {
     PLUS

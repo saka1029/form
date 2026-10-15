@@ -19,9 +19,9 @@ public class Term {
         this(coefficient, new LinkedHashSet<>());
     }
 
-    public Term reduce() {
+    public Term expand() {
         return new Term(coefficient, factors.stream()
-            .map(x -> x.reduce())
+            .map(x -> x.expand())
             .collect(Collectors.toSet()));
 
     }

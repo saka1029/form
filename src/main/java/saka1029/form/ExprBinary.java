@@ -25,8 +25,8 @@ public class ExprBinary implements Expression {
     }
 
     @Override
-    public Expression reduce() {
-        return new ExprBinary(operator, left.reduce(), right.reduce());
+    public Expression expand() {
+        return new ExprBinary(operator, left.expand(), right.expand());
     }
 
     @Override

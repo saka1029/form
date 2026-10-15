@@ -27,7 +27,7 @@ public class Polynomial implements Primary {
     }
 
     @Override
-    public Polynomial reduce() {
+    public Polynomial expand() {
         Map<Set<Factor>, Integer> newTerms = new LinkedHashMap<>();
         for (Term term : terms) {
             Integer coefficient = newTerms.get(term.factors);

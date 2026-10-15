@@ -12,8 +12,8 @@ public class Factor {
         this.primary = primary;
     }
 
-    public Factor reduce() {
-        return new Factor(power, primary.reduce());
+    public Factor expand() {
+        return new Factor(power, primary.expand());
     }
 
     @Override
