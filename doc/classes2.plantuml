@@ -29,7 +29,7 @@ enum Op {
 class Binary {
     Op operator
 }
-Binary .up.|> Polynomial
-Binary --> Polynomial : left
-Binary --> Polynomial : right
+Binary .up.|> Expression
+Binary --> Expression : left
+Binary --> Expression : right
 @enduml
