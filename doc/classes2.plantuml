@@ -8,13 +8,13 @@ class Term {
     int coefficient
 }
 Term .up.|> Polynomial
-Terms --> "*" Term : terms
+Terms -left-> "*" Term : terms
 class Factor {
     int power
 }
 Factor .up.|> Polynomial
 Factor -up-> Expression
-Term --> "*" Factor : factors
+Term -left-> "*" Factor : factors
 class Variable {
     String name
 }
@@ -30,6 +30,6 @@ class Binary {
     Op operator
 }
 Binary .up.|> Expression
-Binary --> Expression : left
-Binary --> Expression : right
+Binary -left-> Expression : left
+Binary -left-> Expression : right
 @enduml
