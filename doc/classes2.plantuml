@@ -19,6 +19,7 @@ class Variable {
     String name
 }
 Variable .up.|> Expression
+Variable .up.|> Polynomial
 enum Op {
     PLUS
     MINUS
