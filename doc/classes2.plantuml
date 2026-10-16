@@ -8,13 +8,13 @@ class Term {
     int coefficient
 }
 Term .up.|> Polynomial
-Terms -left-> "*" Term : terms
+Terms -right-> "*" Term : terms
 class Factor {
     int power
 }
 Factor .up.|> Polynomial
 Factor -up-> Expression
-Term -left-> "*" Factor : factors
+Term -right-> "*" Factor : factors
 class Variable {
     String name
 }
