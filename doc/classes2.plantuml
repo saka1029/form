@@ -1,33 +1,34 @@
-@startuml form
+@startuml
+interface Expression
+interface Polynomial
+Polynomial -up-|> Expression
+class Terms
+Terms .up.|> Polynomial
+class Term {
+    int coefficient
+}
+Term .up.|> Polynomial
+Terms --> "*" Term : terms
+class Factor {
+    int power
+}
+Factor .up.|> Polynomial
+Factor -up-> Expression
+Term --> "*" Factor : factors
+class Variable {
+    String name
+}
+Variable .up.|> Expression
 enum Op {
     PLUS
     MINUS
     MULTIPLY
     DIVIDE
 }
-' Primary -> Expression
-interface Expression {
-    Expression expand()
-}
 class Binary {
-    Op oprator
-}
-class Polynomial
-class Term {
-    int coefficient
-}
-class Factor {
-    int power
-}
-class Variable {
-    String name
+    Op operator
 }
 Binary .up.|> Polynomial
-Polynomial .up.|> Expression
-Variable .up.|> Expression
 Binary --> Polynomial : left
 Binary --> Polynomial : right
-Polynomial --> "*" Term
-Term --> "*" Factor
-Factor -->  "*" Expression
 @enduml
