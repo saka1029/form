@@ -1,0 +1,23 @@
+@startuml form
+interface Expression
+class CPolynomial
+CPolynomial --> "*" CTerm : terms
+class CTerm {
+    int coefficient
+}
+CTerm --> "*" CFactor : factors
+class CFactor {
+    int power
+}
+CFactor --> Polynomial : polynomial
+class Polynomial
+Polynomial --> "*" Term : terms
+class Term {
+    int coefficient
+}
+Term --> "*" Factor : factors
+class Factor {
+    String name
+    int power
+}
+@enduml
