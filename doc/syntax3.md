@@ -1,10 +1,11 @@
 # syntax
 
 ```
-expression     = c-polynomial
+expression     = c-polynomial | polynomial
 c-polynomial   = [ '-' ] c-term { ( '+' | '-') c-term }
 c-term         = [ int ] { c-factor }
-c-factor       = '(' polynomial ')' [ '^' int ]
+c-factor       = c-primary [ '^' int ]
+c-primary      = '(' polynomial ')'
 polynomial     = [ '-' ] term { ( '+' | '-' ) term }
 term           = [ int ] { factor }
 factor         = variable [ '^' int ]
