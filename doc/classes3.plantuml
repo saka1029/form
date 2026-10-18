@@ -1,0 +1,25 @@
+@startuml form
+interface Expression
+class Polynomial
+Polynomial .up.|> Expression
+Polynomial --> "*" Term : terms
+class Term {
+    int coefficient
+}
+Term -up-|> Polynomial
+Term --> "*" Factor : factors
+class Factor {
+    int power
+}
+Factor -up-|> Term
+Factor --> Primary : primary
+abstract class Primary
+Primary -up-|> Factor
+class Variable {
+    String name
+}
+Variable -up-|> Primary
+class Paren
+Paren -up-|> Primary
+Paren -up-> Polynomial : polynomial
+@enduml
