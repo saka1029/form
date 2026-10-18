@@ -2,17 +2,17 @@
 interface Expression
 class Polynomial
 Polynomial .up.|> Expression
-Polynomial --> "*" Term : terms
+Polynomial --> "2..*" Term : terms
 class Term {
     int coefficient
 }
 Term -up-|> Polynomial
-Term --> "*" Factor : factors
+Term --> "2..*" Factor : factors
 class Factor {
     int power
 }
 Factor -up-|> Term
-Factor --> Primary : primary
+Factor --> "1" Primary : primary
 abstract class Primary
 Primary -up-|> Factor
 class Variable {
@@ -21,5 +21,5 @@ class Variable {
 Variable -up-|> Primary
 class Paren
 Paren -up-|> Primary
-Paren -up-> Polynomial : polynomial
+Paren -up-> "1" Polynomial : polynomial
 @enduml
