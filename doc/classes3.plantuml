@@ -9,6 +9,7 @@ class Term {
 Term -up-|> Polynomial
 Term --> "2..*" Factor : factors
 class Factor {
+    boolean multiply
     int power
 }
 Factor -up-|> Term
