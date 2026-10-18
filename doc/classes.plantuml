@@ -25,10 +25,10 @@ class Variable {
 ExprBinary .up.|> Expression
 Primary -up-|> Expression
 Polynomial .up.|> Primary
+Polynomial -right-> "*" Term
+Term -right-> "*" Factor
 Variable .up.|> Primary
 ExprBinary --> Expression : left
 ExprBinary --> Expression : right
-Polynomial --> "*" Term
-Term --> "*" Factor
 Factor -->  "*"Primary
 @enduml
