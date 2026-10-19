@@ -1,12 +1,23 @@
 # syntax
 
 ```
-polynomial = term { ( '+' | '-' ) term }
-term       = [ int ] factor { ( '/' | [ '*' ] )  factor }
-factor     = primary [ '^' int ]
-primary    = variable | '(' polynomial ')'
+polynomial = term { term }
+term       = factor { ( '/' | [ '*' ] )  factor }
+factor     = power { power }
+power      = primary [ '^' number ]
+primary    = variable | number | '(' polynomial ')'
+variable   = 'a' ... 'z' | 'A' ... 'Z'
+number     = [ ( '+' | '-' )] digit { digit }
+digit      = '0' ... '9'
 ```
 
-## 事前条件
+## 開始条件
+### term
+variable | '+' | '-' | digit | '('
+### factor
+variable | '+' | '-' | digit | '('
+### power
+variable | '+' | '-' | digit | '('
+### primary
+variable | '+' | '-' | digit | '('
 
-factor: variable または '(' で始まっている。

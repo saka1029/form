@@ -9,25 +9,33 @@ PolynomialImpl .left.|> Polynomial
 PolynomialImpl --> "*" Term : terms
 interface Term
 Term -|> Polynomial
-class TermImpl {
-    int coefficient
-}
+class TermImpl
 TermImpl .left.|> Term
 TermImpl --> "*" Factor : factors
 interface Factor
-Factor --|> Term
+Factor -|> Term
 class FactorImpl {
     FactorOperator operator
-    int power
 }
 FactorImpl .left.|> Factor
-FactorImpl --> Primary : primary
+FactorImpl --> "*" Power : power
+interface Power
+Power -|> Factor
+class PowerImpl {
+    int power
+}
+PowerImpl .left.|> Power
+PowerImpl --> "1" Primary : primary
 interface Primary
-Primary --|> Factor
+Primary -|> Power
 class Variable {
     String name
 }
 Variable .up.|> Primary
+class Number {
+    int value
+}
+Number .up.|> Primary
 class Paren
 Paren .up.|> Primary
 Paren -up-> Polynomial : polynomial
