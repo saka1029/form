@@ -123,7 +123,7 @@ public class Parser {
                 factors.add(parseFactor(FactorOperator.DIVIDE));
             else
                 break;
-        return factors.size() == 1
+        return factors.size() == 1 && k == 1
             ? factors.getFirst()
             : new TermImpl(k, factors);
     }

@@ -19,7 +19,7 @@ public class PolynomialImpl implements Polynomial {
 
     @Override
     public String toDebugString() {
-        return "Terms(%s)".formatted(
+        return "Polynomial(%s)".formatted(
             Polynomial.toDebugString(terms));
     }
 
