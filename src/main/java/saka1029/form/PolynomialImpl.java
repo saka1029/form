@@ -18,11 +18,6 @@ public class PolynomialImpl implements Polynomial {
     }
 
     @Override
-    public Set<Term> terms() {
-        return terms;
-    }
-
-    @Override
     public String toDebugString() {
         return "Terms(%s)".formatted(ToDebugString.toDebugString(terms));
     }

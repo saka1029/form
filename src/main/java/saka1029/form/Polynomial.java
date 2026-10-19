@@ -1,7 +1,4 @@
 package saka1029.form;
 
-import java.util.Set;
-
-public interface Polynomial extends Primary {
-    Set<Term> terms();
+public interface Polynomial extends Value, ToDebugString {
 }

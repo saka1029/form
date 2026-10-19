@@ -3,6 +3,8 @@ package saka1029.form;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.LinkedHashSet;
+import java.util.SequencedSet;
 
 /**
  * polynomial = terms
@@ -89,7 +91,7 @@ public class Parser {
             Polynomial polynomial = read();
             if (!eat(')'))
                 throw new FormException(("')' expected"));
-            return polynomial;
+            return new Paren(polynomial);
         } else
             throw new FormException(("variable or '(' expected"));
     }
@@ -104,40 +106,46 @@ public class Parser {
                 throw new FormException("digit expected");
             power = parseNumber();
         }
-        return new FactorImpl(operator, power, primary);
+        return operator == FactorOperator.MULTIPLY && power == 1
+            ? primary
+            : new FactorImpl(operator, power, primary);
     }
 
     Term parseTerm(int k) {
         spaces();
         if (isDigit(ch))
             k *= parseNumber();
-        Term result = new TermImpl(k);
+        SequencedSet<Factor> factors = new LinkedHashSet<>();
         while (true)
             if (isVariable(ch) || ch == '(')
-                result.factors().add(parseFactor(FactorOperator.MULTIPLY));
+                factors.add(parseFactor(FactorOperator.MULTIPLY));
             else if (eat('/'))
-                result.factors().add(parseFactor(FactorOperator.DIVIDE));
+                factors.add(parseFactor(FactorOperator.DIVIDE));
             else
                 break;
-        return result;
+        return factors.size() == 1
+            ? factors.getFirst()
+            : new TermImpl(k, factors);
     }
 
-    Polynomial parseTerms() {
-        Polynomial result = new PolynomialImpl();
-        result.terms().add(parseTerm(eat('-') ?  -1 : 1));
+    Polynomial parsePolynomial() {
+        SequencedSet<Term> terms = new LinkedHashSet<>();
+        terms.add(parseTerm(eat('-') ?  -1 : 1));
         while (true)
             if (eat('+'))
-                result.terms().add(parseTerm(1));
+                terms.add(parseTerm(1));
             else if (eat('-'))
-                result.terms().add(parseTerm(-1));
+                terms.add(parseTerm(-1));
             else
                 break;
-        return result;
+        return terms.size() == 1
+            ? terms.getFirst()
+            : new PolynomialImpl(terms);
     }
 
     public Polynomial read() {
         spaces();
-        return parseTerms();
+        return parsePolynomial();
     }
 
     public static Polynomial parse(String input) {

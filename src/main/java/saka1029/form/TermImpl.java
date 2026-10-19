@@ -9,14 +9,7 @@ import java.util.stream.Collectors;
 public class TermImpl implements Term {
 
     public final int coefficient;
-    public int coefficient() {
-        return coefficient;
-    }
-
     public final Set<Factor> factors;
-    public Set<Factor> factors() {
-        return factors;
-    }
 
     public TermImpl(int coefficient, Set<Factor> factors) {
         this.coefficient = coefficient;
@@ -37,10 +30,13 @@ public class TermImpl implements Term {
     public int value(Map<Variable, Integer> context) {
         int result = 1;
         for (Factor f : factors)
-            if (f.operator() == FactorOperator.MULTIPLY)
-                result *= f.value(context);
+            if (f instanceof FactorImpl fi)
+                if (fi.operator == FactorOperator.MULTIPLY)
+                    result *= f.value(context);
+                else
+                    result /= f.value(context);
             else
-                result /= f.value(context);
+                result *= f.value(context);
         return coefficient * result;
     }
 
