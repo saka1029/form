@@ -6,18 +6,8 @@ import java.util.Objects;
 public class FactorImpl implements Factor {
 
     public final FactorOperator operator;
-    public FactorOperator operator() {
-        return operator;
-    }
-
     public final int power;
-    public int power() {
-        return power;
-    }
     public final Primary primary;
-    public Primary primary() {
-        return primary;
-    }
 
     public FactorImpl(FactorOperator operator, int power, Primary primary) {
         this.operator = operator;
