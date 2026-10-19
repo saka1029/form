@@ -3,7 +3,7 @@ package saka1029.form;
 import java.util.Map;
 import java.util.Objects;
 
-public class FactorImpl implements Value, ToDebugString {
+public class FactorImpl implements Factor {
 
     public final FactorOperator operator;
     public FactorOperator operator() {

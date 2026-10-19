@@ -104,32 +104,32 @@ public class Parser {
                 throw new FormException("digit expected");
             power = parseNumber();
         }
-        return new Factor(operator, power, primary);
+        return new FactorImpl(operator, power, primary);
     }
 
     Term parseTerm(int k) {
         spaces();
         if (isDigit(ch))
             k *= parseNumber();
-        Term result = new Term(k);
+        Term result = new TermImpl(k);
         while (true)
             if (isVariable(ch) || ch == '(')
-                result.factors.add(parseFactor(FactorOperator.MULTIPLY));
+                result.factors().add(parseFactor(FactorOperator.MULTIPLY));
             else if (eat('/'))
-                result.factors.add(parseFactor(FactorOperator.DIVIDE));
+                result.factors().add(parseFactor(FactorOperator.DIVIDE));
             else
                 break;
         return result;
     }
 
-    Terms parseTerms() {
-        Terms result = new Terms();
-        result.terms.add(parseTerm(eat('-') ?  -1 : 1));
+    Polynomial parseTerms() {
+        Polynomial result = new PolynomialImpl();
+        result.terms().add(parseTerm(eat('-') ?  -1 : 1));
         while (true)
             if (eat('+'))
-                result.terms.add(parseTerm(1));
+                result.terms().add(parseTerm(1));
             else if (eat('-'))
-                result.terms.add(parseTerm(-1));
+                result.terms().add(parseTerm(-1));
             else
                 break;
         return result;

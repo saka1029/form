@@ -37,7 +37,7 @@ public class TermImpl implements Term {
     public int value(Map<Variable, Integer> context) {
         int result = 1;
         for (Factor f : factors)
-            if (f.operator == FactorOperator.MULTIPLY)
+            if (f.operator() == FactorOperator.MULTIPLY)
                 result *= f.value(context);
             else
                 result /= f.value(context);
