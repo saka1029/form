@@ -23,6 +23,7 @@ public class TestFactor {
     public void testToString() {
         assertEquals("a", parse("a").toString());
         assertEquals("ab", parse("ab").toString());
+        assertEquals("ab", parse("a*b").toString());
         assertEquals("a^2", parse("a^2").toString());
         assertEquals("a^2b^3", parse("a^2b^3").toString());
         assertEquals("a", parse("a^1").toString());

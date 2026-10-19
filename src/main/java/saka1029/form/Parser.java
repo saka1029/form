@@ -117,7 +117,7 @@ public class Parser {
             k *= parseNumber();
         SequencedSet<Factor> factors = new LinkedHashSet<>();
         while (true)
-            if (isVariable(ch) || ch == '(')
+            if (eat('*') || isVariable(ch) || ch == '(')
                 factors.add(parseFactor(FactorOperator.MULTIPLY));
             else if (eat('/'))
                 factors.add(parseFactor(FactorOperator.DIVIDE));

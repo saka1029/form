@@ -2,7 +2,7 @@
 
 ```
 polynomial = term { ( '+' | '-' ) term }
-term       = [ int ] factor { [ '/' ] factor }
+term       = [ int ] factor { ( '/' | [ '*' ] )  factor }
 factor     = primary [ '^' int ]
 primary    = variable | '(' polynomial ')'
 ```
