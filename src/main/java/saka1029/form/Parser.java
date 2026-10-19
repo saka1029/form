@@ -4,13 +4,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
-import saka1029.form.ExprBinary.Op;
-
 /**
- * expression = expr-mult { ( '+' | '-' ) expr-mult }
- * expr-mult  = polynomial { ( '*' | '/' ) polynomial }
- * polynomial = term { ( '+' | '-' ) term }
- * term       = [ int ] factor { '*' factor }
+ * polynomial = terms
+ * terms      = term { ( '+' | '-' ) term }
+ * term       = [ int ] factor { [ '/' ] factor }
  * factor     = primary [ '^' int ]
  * primary    = variable | '(' polynomial ')'
  */
@@ -89,15 +86,15 @@ public class Parser {
             get();
             return Variable.of(variable);
         } else if (eat('(')) {
-            Primary result = parsePolynomial();
+            Polynomial polynomial = read();
             if (!eat(')'))
                 throw new FormException(("')' expected"));
-            return result;
+            return polynomial;
         } else
             throw new FormException(("variable or '(' expected"));
     }
 
-    Factor parseFactor() {
+    Factor parseFactor(FactorOperator operator) {
         spaces();
         int power = 1;
         Primary primary = parsePrimary();
@@ -107,7 +104,7 @@ public class Parser {
                 throw new FormException("digit expected");
             power = parseNumber();
         }
-        return new Factor(power, primary);
+        return new Factor(operator, power, primary);
     }
 
     Term parseTerm(int k) {
@@ -115,18 +112,19 @@ public class Parser {
         if (isDigit(ch))
             k *= parseNumber();
         Term result = new Term(k);
-        while (isVariable(ch) || ch == '(')
-            result.factors.add(parseFactor());
+        while (true)
+            if (isVariable(ch) || ch == '(')
+                result.factors.add(parseFactor(FactorOperator.MULTIPLY));
+            else if (eat('/'))
+                result.factors.add(parseFactor(FactorOperator.DIVIDE));
+            else
+                break;
         return result;
     }
 
-    Polynomial parsePolynomial() {
-        spaces();
-        Polynomial result = new Polynomial();
-        int sign = 1;
-        if (eat('-'))
-            sign = -1;
-        result.terms.add(parseTerm(sign));
+    Terms parseTerms() {
+        Terms result = new Terms();
+        result.terms.add(parseTerm(eat('-') ?  -1 : 1));
         while (true)
             if (eat('+'))
                 result.terms.add(parseTerm(1));
@@ -137,30 +135,12 @@ public class Parser {
         return result;
     }
 
-    Expression parseExprMult() {
+    public Polynomial read() {
         spaces();
-        Expression result = parsePolynomial();
-        while (true)
-            if (isVariable(ch) || isDigit(ch) || ch == ')')
-                result = new ExprBinary(Op.MULTIPLY, result, parseExprMult());
-            else if (eat('/'))
-                result = new ExprBinary(Op.DIVIDE, result, parseExprMult());
-            else
-                break;
-        return result;
-        
+        return parseTerms();
     }
 
-    public Expression read() {
-        spaces();
-        Expression result = parseExprMult();
-        while (true)
-            if (eat('+'))
-                result = new ExprBinary(Op.PLUS, result, parseExprMult());
-            else if (eat('-'))
-                result = new ExprBinary(Op.MINUS, result, parseExprMult());
-            else
-                break;
-        return result;
+    public static Polynomial parse(String input) {
+        return new Parser(input).read();
     }
 }

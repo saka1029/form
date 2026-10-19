@@ -1,11 +1,12 @@
 package saka1029.form;
 
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Term {
+public class Term implements Value, ToDebugString {
 
     public final int coefficient;
     public final Set<Factor> factors;
@@ -19,11 +20,21 @@ public class Term {
         this(coefficient, new LinkedHashSet<>());
     }
 
-    // @Override
-    public Term expand() {
-        return new Term(coefficient, factors.stream()
-            .map(x -> x.expand())
-            .collect(Collectors.toSet()));
+    @Override
+    public String toDebugString() {
+        return "Term(%d, %s)".formatted(coefficient,
+            ToDebugString.toDebugString(factors));
+    }
+
+    @Override
+    public int value(Map<Variable, Integer> context) {
+        int result = 1;
+        for (Factor f : factors)
+            if (f.operator == FactorOperator.MULTIPLY)
+                result *= f.value(context);
+            else
+                result /= f.value(context);
+        return coefficient * result;
     }
 
     @Override

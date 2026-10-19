@@ -1,6 +1,5 @@
 package saka1029.form;
 
-public interface Primary extends Expression {
-    @Override 
-    Primary expand();
+public interface Primary extends Value, ToDebugString {
+
 }

@@ -16,8 +16,16 @@ public class Variable implements Primary {
         return all.computeIfAbsent(name, k -> new Variable(name));
     }
 
-    public Variable expand() {
-        return this;
+    @Override
+    public String toDebugString() {
+        return "Variable(%s)".formatted(name);
+    }
+
+    @Override
+    public int value(Map<Variable, Integer> context) {
+        if (!context.containsKey(this))
+            throw new FormException("variable '%s' not define", name);
+        return context.get(this);
     }
 
     @Override
