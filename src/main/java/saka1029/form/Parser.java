@@ -93,7 +93,8 @@ public class Parser {
                 throw new FormException(("')' expected"));
             return new Paren(polynomial);
         } else
-            throw new FormException(("variable or '(' expected"));
+            return new Paren(read());
+            // throw new FormException(("variable or '(' expected"));
     }
 
     Factor parseFactor(FactorOperator operator) {
