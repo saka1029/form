@@ -53,7 +53,7 @@ public class FactorImpl implements Factor {
     public String toString() {
         return "%s%s%s".formatted(
             operator == FactorOperator.DIVIDE ? "/" : "",
-            primary instanceof Variable ? primary : "(" + primary + ")",
+            primary,
             power != 1 ? "^" + power : "");
     }
 }

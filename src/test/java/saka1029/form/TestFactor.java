@@ -19,6 +19,7 @@ public class TestFactor {
         assertEquals("Variable(a)", parse("a^1").toDebugString());
         assertEquals("Paren(Variable(a))", parse("(a)").toDebugString());
         assertEquals("Term(1, [Paren(Variable(a)), Variable(b)])", parse("(a)b").toDebugString());
+        assertEquals("Factor(*, 2, Paren(Term(1, [Variable(a), Variable(b)])))", parse("(ab)^2").toDebugString());
     }
     
     @Test 
@@ -31,6 +32,7 @@ public class TestFactor {
         assertEquals("a", parse("a^1").toString());
         assertEquals("(a)", parse("(a)").toString());
         assertEquals("(a)b", parse("(a)b").toString());
+        assertEquals("(ab)^2", parse("(ab)^2").toString());
     }
     
     @Test 
