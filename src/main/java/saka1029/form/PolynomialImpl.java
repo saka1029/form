@@ -6,16 +6,20 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class Terms implements Polynomial {
+public class PolynomialImpl implements Polynomial {
 
     public final Set<Term> terms;
 
-    public Terms(Set<Term> terms) {
+    public PolynomialImpl(Set<Term> terms) {
         this.terms = terms;
     }
-
-    public Terms() {
+    public PolynomialImpl() {
         this(new LinkedHashSet<>());
+    }
+
+    @Override
+    public Set<Term> terms() {
+        return terms;
     }
 
     @Override
@@ -32,8 +36,8 @@ public class Terms implements Polynomial {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Terms t
-            && t.terms.equals(terms);
+        return obj instanceof PolynomialImpl p
+            && p.terms.equals(terms);
     }
 
     @Override
