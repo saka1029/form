@@ -1,29 +1,40 @@
 @startuml form
-interface Expression
-interface Polynomial
-Polynomial -up-|> Expression
-class Terms
-Terms .up.|> Polynomial
-class Term {
+enum FactorOperator {
+    MULTIPLY
+    DIVIDE
+}
+interface Polynomial {
+    Set<Term> terms()
+}
+Polynomial --|> Primary
+class PolynomialImpl
+PolynomialImpl .left.|> Polynomial
+PolynomialImpl --> "*" Term : terms
+interface Term {
+    int coefficient()
+    Set<Factor> factors()
+}
+class TermImpl {
     int coefficient
+    Set<Factor> factors
 }
-'Term .up.|> Polynomial
-Terms -right-> "*" Term : terms
-class Factor {
+TermImpl .left.|> Term
+interface Factor {
+    FactorOperator operator()
+    int power()
+    Primary primary()
+}
+Factor --> Primary : primary
+class FactorImpl {
+    FactorOperator operator
     int power
+    Primary primary
 }
-'Factor .up.|> Polynomial
-Factor -up-> Expression
-Term -right-> "*" Factor : factors
+FactorImpl .left.|> Factor
+Term --> "*" Factor : factors
+interface Primary
 class Variable {
     String name
 }
-Variable .up.|> Expression
-'Variable .up.|> Polynomial
-'enum Op {
-'    PLUS
-'    MINUS
-'    MULTIPLY
-'    DIVIDE
-'}
+Variable .up.|> Primary
 @enduml
