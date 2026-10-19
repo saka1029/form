@@ -22,8 +22,8 @@ public class TermImpl implements Term {
 
     @Override
     public String toDebugString() {
-        return "Term(%d, %s)".formatted(coefficient,
-            ToDebugString.toDebugString(factors));
+        return "Term(%d, %s)".formatted(
+            coefficient, Polynomial.toDebugString(factors));
     }
 
     @Override

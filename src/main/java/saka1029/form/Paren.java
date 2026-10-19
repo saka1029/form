@@ -12,7 +12,7 @@ public class Paren implements Primary {
 
     @Override
     public String toDebugString() {
-        return "Paren(%s)".formatted(polynomial);
+        return "Paren(%s)".formatted(polynomial.toDebugString());
     }
 
     @Override

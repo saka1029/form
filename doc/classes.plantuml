@@ -4,23 +4,33 @@ enum FactorOperator {
     DIVIDE
 }
 interface Polynomial
-Polynomial --|> Primary
-class Terms {
-}
-Terms .up.|> Polynomial
-class Term {
+class PolynomialImpl
+PolynomialImpl .left.|> Polynomial
+PolynomialImpl --> "*" Term : terms
+interface Term
+Term -|> Polynomial
+Term --> "*" Factor : factors
+class TermImpl {
     int coefficient
+    Set<Factor> factors
 }
-Terms --> "*" Term : terms
-class Factor {
+TermImpl .left.|> Term
+interface Factor
+Factor --|> Term
+Factor ---> Primary : primary
+class FactorImpl {
     FactorOperator operator
     int power
+    Primary primary
 }
-Factor --> Primary : primary
-Term --> "*" Factor : factors
+FactorImpl .left.|> Factor
 interface Primary
+Primary --|> Factor
 class Variable {
     String name
 }
 Variable .up.|> Primary
+class Paren
+Paren .up.|> Primary
+Paren -up-> Polynomial : polynomial
 @enduml

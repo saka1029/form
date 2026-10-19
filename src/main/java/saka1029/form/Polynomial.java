@@ -1,4 +1,16 @@
 package saka1029.form;
 
-public interface Polynomial extends Value, ToDebugString {
+import java.util.Collection;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public interface Polynomial {
+    int value(Map<Variable, Integer> context);
+    String toDebugString();
+
+    public static <T extends Polynomial> String toDebugString(Collection<T> collection) {
+        return collection.stream()
+            .map(e -> e.toDebugString())
+            .collect(Collectors.joining(", ", "[", "]"));
+    }
 }
