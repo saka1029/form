@@ -18,7 +18,7 @@ class FactorImpl {
     FactorOperator operator
 }
 FactorImpl .left.|> Factor
-FactorImpl --> "*" Power : power
+FactorImpl --> "*" Power : powers
 interface Power
 Power -|> Factor
 class PowerImpl {
