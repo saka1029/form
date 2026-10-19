@@ -26,6 +26,7 @@ public class TestTerm {
         assertEquals(-5, parse("-a - b").value(context));
         assertEquals(-14, parse("-a - bc").value(context));
         assertEquals(25, parse("(a + b)(a+b)").value(context));
+        assertEquals(55, parse("(a + b^2)(a+b)").value(context));
     }
 
 }
