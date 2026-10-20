@@ -1,5 +1,4 @@
 package saka1029.form;
 
-public interface Primary extends Factor {
-
+public interface Primary extends Power {
 }

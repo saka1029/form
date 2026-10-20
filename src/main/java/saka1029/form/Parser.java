@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.SequencedSet;
 
 /**
@@ -73,6 +74,13 @@ public class Parser {
         return Character.isAlphabetic(ch);
     }
 
+    static boolean isElement(int ch) {
+        return isDigit(ch)
+            || ch == '+' || ch == '-'
+            || isVariable(ch)
+            || ch == '(';
+    }
+
     int parseNumber() {
         sb.setLength(0);
         while (isDigit(ch)) {
@@ -97,48 +105,42 @@ public class Parser {
             // throw new FormException(("variable or '(' expected"));
     }
 
-    Factor parseFactor(FactorOperator operator) {
-        spaces();
-        int power = 1;
-        Primary primary = parsePrimary();
-        if (eat('^')) {
-            spaces();
-            if (!isDigit(ch))
-                throw new FormException("digit expected");
-            power = parseNumber();
-        }
-        return operator == FactorOperator.MULTIPLY && power == 1
-            ? primary
-            : new FactorImpl(operator, power, primary);
+    Power parsePower() {
     }
 
-    Term parseTerm(int k) {
+    Factor parseFactor(FactorOperator operator) {
         spaces();
-        if (isDigit(ch))
-            k *= parseNumber();
+        SequencedSet<Power> powers = new LinkedHashSet<>();
+        powers.add(parsePower());
+        while (isElement(ch))
+            powers.add(parsePower());
+        return operator == FactorOperator.MULTIPLY
+            ? primary
+            : new FactorImpl(operator, powers);
+    }
+
+    Term parseTerm() {
+        spaces();
         SequencedSet<Factor> factors = new LinkedHashSet<>();
+        factors.add(parseFactor(FactorOperator.MULTIPLY));
         while (true)
-            if (eat('*') || isVariable(ch) || ch == '(')
+            if (eat('*') || isElement(ch))
                 factors.add(parseFactor(FactorOperator.MULTIPLY));
             else if (eat('/'))
                 factors.add(parseFactor(FactorOperator.DIVIDE));
             else
                 break;
-        return factors.size() == 1 && k == 1
+        return factors.size() == 1
             ? factors.getFirst()
-            : new TermImpl(k, factors);
+            : new TermImpl(factors);
     }
 
     Polynomial parsePolynomial() {
         SequencedSet<Term> terms = new LinkedHashSet<>();
-        terms.add(parseTerm(eat('-') ?  -1 : 1));
-        while (true)
-            if (eat('+'))
-                terms.add(parseTerm(1));
-            else if (eat('-'))
-                terms.add(parseTerm(-1));
-            else
-                break;
+        terms.add(parseTerm());
+        spaces();
+        while (isElement(ch))
+                terms.add(parseTerm());
         return terms.size() == 1
             ? terms.getFirst()
             : new PolynomialImpl(terms);
