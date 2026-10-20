@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.SequencedSet;
 
 /**
@@ -106,6 +105,7 @@ public class Parser {
     }
 
     Power parsePower() {
+        return null;
     }
 
     Factor parseFactor(FactorOperator operator) {
@@ -115,7 +115,7 @@ public class Parser {
         while (isElement(ch))
             powers.add(parsePower());
         return operator == FactorOperator.MULTIPLY
-            ? primary
+            ? null
             : new FactorImpl(operator, powers);
     }
 
