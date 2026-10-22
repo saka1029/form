@@ -13,10 +13,6 @@ public class TermImpl implements Term {
         this.factors = factors;
     }
 
-    public TermImpl() {
-        this(new LinkedList<>());
-    }
-
     @Override
     public String toDebugString() {
         return "Term(%s)".formatted(

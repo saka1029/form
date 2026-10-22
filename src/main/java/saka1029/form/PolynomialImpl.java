@@ -1,6 +1,5 @@
 package saka1029.form;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -12,9 +11,6 @@ public class PolynomialImpl implements Polynomial {
 
     public PolynomialImpl(List<Term> terms) {
         this.terms = terms;
-    }
-    public PolynomialImpl() {
-        this(new LinkedList<>());
     }
 
     @Override
