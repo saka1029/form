@@ -4,24 +4,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import static saka1029.form.Common.*;
 
 public class PolynomialImpl implements Polynomial {
 
-    public final List<Term> terms;
+    public final Map<Term, Integer> terms;
 
     public PolynomialImpl(List<Term> terms) {
-        this.terms = terms;
+        this.terms = newMap(terms);
     }
 
     @Override
     public String toDebugString() {
         return "Polynomial(%s)".formatted(
-            Polynomial.toDebugString(terms));
+            toDebugStringCollection(terms));
     }
 
     @Override
     public int value(Map<Variable, Integer> context) {
-        return terms.stream()
+        return flat(terms).stream()
             .mapToInt(t -> t.value(context))
             .sum();
     }
@@ -39,7 +40,7 @@ public class PolynomialImpl implements Polynomial {
 
     @Override
     public String toString() {
-        String s = terms.stream()
+        String s = flat(terms).stream()
             .map(t -> t.toString())
             .map(t -> t.startsWith("-") ? t : "+" + t)
             .collect(Collectors.joining());

@@ -1,28 +1,28 @@
 package saka1029.form;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import static saka1029.form.Common.*;
 
 public class TermImpl implements Term {
 
-    public final List<Factor> factors;
+    public final Map<Factor, Integer> factors;
 
-    public TermImpl(LinkedList<Factor> factors) {
-        this.factors = factors;
+    public TermImpl(List<Factor> factors) {
+        this.factors = newMap(factors);
     }
 
     @Override
     public String toDebugString() {
         return "Term(%s)".formatted(
-            Polynomial.toDebugString(factors));
+            toDebugStringCollection(factors));
     }
 
     @Override
     public int value(Map<Variable, Integer> context) {
         int result = 1;
-        for (Factor f : factors)
+        for (Factor f : flat(factors))
             if (f instanceof FactorImpl fi)
                 if (fi.operator == FactorOperator.MULTIPLY)
                     result *= f.value(context);
@@ -46,7 +46,7 @@ public class TermImpl implements Term {
 
     @Override
     public String toString() {
-        return factors.stream()
+        return flat(factors).stream()
             .map(Object::toString)
             .collect(Collectors.joining());
     }

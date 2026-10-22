@@ -4,27 +4,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import static saka1029.form.Common.*;
 
 public class FactorImpl implements Factor {
 
     public final FactorOperator operator;
-    public final List<Power> powers;
+    public final Map<Power, Integer> powers;
 
     public FactorImpl(FactorOperator operator, List<Power> powers) {
         this.operator = operator;
-        this.powers = powers;
+        this.powers = newMap(powers);
     }
 
     @Override
     public String toDebugString() {
         return "Factor(%s, %s)".formatted(
-            operator, Polynomial.toDebugString(powers));
+            operator, toDebugStringCollection(powers));
     }
 
     @Override
     public int value(Map<Variable, Integer> context) {
         int result = 1;
-        for (Power e : powers)
+        for (Power e : flat(powers))
             result *= e.value(context);
         return result;
     }
@@ -45,7 +46,7 @@ public class FactorImpl implements Factor {
     public String toString() {
         return "%s%s".formatted(
             operator == FactorOperator.DIVIDE ? "/" : "",
-            powers.stream()
+            flat(powers).stream()
                 .map(Object::toString)
                 .collect(Collectors.joining()));
     }
