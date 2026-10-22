@@ -72,7 +72,7 @@ public class Parser {
         return Character.isAlphabetic(ch);
     }
 
-    static boolean isElement(int ch) {
+    static boolean isFactor(int ch) {
         return isDigit(ch) || isVariable(ch) || ch == '(';
     }
 
@@ -118,24 +118,18 @@ public class Parser {
     Factor parseFactor(boolean positive, FactorOperator operator) {
         spaces();
         LinkedList<Power> powers = new LinkedList<>();
-        powers.add(parsePower());
-        while (isElement(ch))
-            powers.add(parsePower());
-        if (powers.size() == 1 && operator == FactorOperator.MULTIPLY) {
-            Power first = powers.getFirst();
-            if (positive)
-                return first;
-            else if (first instanceof Number n)
-                return n.multiply(-1);
-        }
-        if (!positive) {
-            Power first = powers.getFirst();
+        Power first = parsePower();
+        if (!positive)
             if (first instanceof Number n)
-                powers.set(0, n.multiply(-1));
+                first = n.multiply(-1);
             else
-                powers.addFirst(MINUS_ONE);
-        }
-        return new FactorImpl(operator, powers);
+                powers.add(MINUS_ONE);
+        powers.add(first);
+        while (isFactor(ch))
+            powers.add(parsePower());
+        return powers.size() == 1 && operator == FactorOperator.MULTIPLY
+            ? first
+            : new FactorImpl(operator, powers);
     }
 
     Term parseTerm(boolean positive) {
@@ -143,7 +137,7 @@ public class Parser {
         LinkedList<Factor> factors = new LinkedList<>();
         factors.add(parseFactor(positive, FactorOperator.MULTIPLY));
         while (true)
-            if (eat('*') || isElement(ch))
+            if (eat('*') || isFactor(ch))
                 factors.add(parseFactor(positive, FactorOperator.MULTIPLY));
             else if (eat('/'))
                 factors.add(parseFactor(positive, FactorOperator.DIVIDE));
