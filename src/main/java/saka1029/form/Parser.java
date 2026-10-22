@@ -135,7 +135,8 @@ public class Parser {
     Term parseTerm(boolean positive) {
         spaces();
         LinkedList<Factor> factors = new LinkedList<>();
-        factors.add(parseFactor(positive, FactorOperator.MULTIPLY));
+        Factor first = parseFactor(positive, FactorOperator.MULTIPLY);
+        factors.add(first);
         while (true)
             if (eat('*') || isFactor(ch))
                 factors.add(parseFactor(positive, FactorOperator.MULTIPLY));
@@ -143,9 +144,7 @@ public class Parser {
                 factors.add(parseFactor(positive, FactorOperator.DIVIDE));
             else
                 break;
-        return factors.size() == 1
-            ? factors.getFirst()
-            : new TermImpl(factors);
+        return factors.size() == 1 ? first : new TermImpl(factors);
     }
 
     Polynomial parsePolynomial() {
