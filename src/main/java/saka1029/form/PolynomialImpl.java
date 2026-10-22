@@ -1,20 +1,20 @@
 package saka1029.form;
 
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class PolynomialImpl implements Polynomial {
 
-    public final Set<Term> terms;
+    public final List<Term> terms;
 
-    public PolynomialImpl(Set<Term> terms) {
+    public PolynomialImpl(List<Term> terms) {
         this.terms = terms;
     }
     public PolynomialImpl() {
-        this(new LinkedHashSet<>());
+        this(new LinkedList<>());
     }
 
     @Override

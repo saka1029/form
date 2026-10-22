@@ -1,22 +1,20 @@
 package saka1029.form;
 
-import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TermImpl implements Term {
 
-    // public final int coefficient;
-    public final Set<Factor> factors;
+    public final List<Factor> factors;
 
-    public TermImpl(Set<Factor> factors) {
-        // this.coefficient = coefficient;
+    public TermImpl(LinkedList<Factor> factors) {
         this.factors = factors;
     }
 
     public TermImpl() {
-        this(new LinkedHashSet<>());
+        this(new LinkedList<>());
     }
 
     @Override

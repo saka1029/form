@@ -3,9 +3,7 @@ package saka1029.form;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.SequencedSet;
 
 /**
  * polynomial = terms
@@ -142,7 +140,7 @@ public class Parser {
 
     Term parseTerm(boolean positive) {
         spaces();
-        SequencedSet<Factor> factors = new LinkedHashSet<>();
+        LinkedList<Factor> factors = new LinkedList<>();
         factors.add(parseFactor(positive, FactorOperator.MULTIPLY));
         while (true)
             if (eat('*') || isElement(ch))
@@ -158,7 +156,7 @@ public class Parser {
 
     Polynomial parsePolynomial() {
         spaces();
-        SequencedSet<Term> terms = new LinkedHashSet<>();
+        LinkedList<Term> terms = new LinkedList<>();
         boolean positive = true;;
         if (eat('-'))
             positive = false;
