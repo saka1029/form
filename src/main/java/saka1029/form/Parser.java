@@ -107,8 +107,10 @@ public class Parser {
         Primary primary = parsePrimary();
         if (eat('^')) {
             int sign = eat('-') ? -1 : eat('+') ? 1 : 1;
-            int value = sign * parseNumber();
-            return value == 1 ? primary : new PowerImpl(value, primary);
+            int power = sign * parseNumber();
+            return power == 1 ? primary
+                : primary instanceof Number n ? new Number((int)Math.pow(n.value, power))
+                : new PowerImpl(power, primary);
         }
         return primary;
     }

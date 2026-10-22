@@ -21,7 +21,7 @@ public class TestFactor {
         assertEquals("Factor(*, [Paren(Variable(a)), Variable(b)])", parse("(a)b").toDebugString());
         assertEquals("Power(2, Paren(Factor(*, [Variable(a), Variable(b)])))", parse("(ab)^2").toDebugString());
         assertEquals("Term([Variable(a), Factor(/, [Variable(b)])])", parse("a/b").toDebugString());
-        assertEquals("Term([Variable(a), Factor(/, [3, Variable(b)])])", parse("a/3b").toDebugString());
+        assertEquals("Term([Variable(a), Factor(/, [Number(3), Variable(b)])])", parse("a/3b").toDebugString());
     }
     
     @Test 

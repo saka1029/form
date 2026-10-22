@@ -21,7 +21,7 @@ public class Number implements Primary {
 
     @Override
     public String toDebugString() {
-        return Integer.toString(value);
+        return "Number(%d)".formatted(value);
     }
 
     @Override
