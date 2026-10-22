@@ -11,7 +11,7 @@ public class PolynomialImpl implements Polynomial {
     public final Map<Term, Integer> terms;
 
     public PolynomialImpl(List<Term> terms) {
-        this.terms = newMap(terms);
+        this.terms = enMap(terms);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class PolynomialImpl implements Polynomial {
 
     @Override
     public int value(Map<Variable, Integer> context) {
-        return flat(terms).stream()
+        return unMap(terms).stream()
             .mapToInt(t -> t.value(context))
             .sum();
     }
@@ -40,7 +40,7 @@ public class PolynomialImpl implements Polynomial {
 
     @Override
     public String toString() {
-        String s = flat(terms).stream()
+        String s = unMap(terms).stream()
             .map(t -> t.toString())
             .map(t -> t.startsWith("-") ? t : "+" + t)
             .collect(Collectors.joining());

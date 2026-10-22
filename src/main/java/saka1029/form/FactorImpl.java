@@ -13,7 +13,7 @@ public class FactorImpl implements Factor {
 
     public FactorImpl(FactorOperator operator, List<Power> powers) {
         this.operator = operator;
-        this.powers = newMap(powers);
+        this.powers = enMap(powers);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class FactorImpl implements Factor {
     @Override
     public int value(Map<Variable, Integer> context) {
         int result = 1;
-        for (Power e : flat(powers))
+        for (Power e : unMap(powers))
             result *= e.value(context);
         return result;
     }
@@ -46,7 +46,7 @@ public class FactorImpl implements Factor {
     public String toString() {
         return "%s%s".formatted(
             operator == FactorOperator.DIVIDE ? "/" : "",
-            flat(powers).stream()
+            unMap(powers).stream()
                 .map(Object::toString)
                 .collect(Collectors.joining()));
     }

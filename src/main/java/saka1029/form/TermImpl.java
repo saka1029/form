@@ -10,7 +10,7 @@ public class TermImpl implements Term {
     public final Map<Factor, Integer> factors;
 
     public TermImpl(List<Factor> factors) {
-        this.factors = newMap(factors);
+        this.factors = enMap(factors);
     }
 
     @Override
@@ -22,7 +22,7 @@ public class TermImpl implements Term {
     @Override
     public int value(Map<Variable, Integer> context) {
         int result = 1;
-        for (Factor f : flat(factors))
+        for (Factor f : unMap(factors))
             if (f instanceof FactorImpl fi)
                 if (fi.operator == FactorOperator.MULTIPLY)
                     result *= f.value(context);
@@ -46,7 +46,7 @@ public class TermImpl implements Term {
 
     @Override
     public String toString() {
-        return flat(factors).stream()
+        return unMap(factors).stream()
             .map(Object::toString)
             .collect(Collectors.joining());
     }

@@ -10,14 +10,14 @@ public class Common {
 
     private Common() { }
 
-    public static <T> Map<T, Integer> newMap(List<T> list) {
+    public static <T> Map<T, Integer> enMap(List<T> list) {
         Map<T, Integer> map = new LinkedHashMap<>();
         for (T e : list)
             map.compute(e, (k, v) -> v == null ? 1 : v + 1);
         return map;
     }
 
-    public static <T> List<T> flat(Map<T, Integer> map) {
+    public static <T> List<T> unMap(Map<T, Integer> map) {
         return map.entrySet().stream()
             .flatMap(e -> IntStream.range(0, e.getValue())
                 .mapToObj(i -> e.getKey()))
@@ -25,7 +25,7 @@ public class Common {
     }
 
     public static <T extends Polynomial> String toDebugStringCollection(Map<T, Integer> map) {
-        return flat(map).stream()
+        return unMap(map).stream()
             .map(Polynomial::toDebugString)
             .collect(Collectors.joining(", ", "[", "]"));
     }
