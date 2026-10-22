@@ -16,6 +16,4 @@ digit      = '0' ... '9'
 variable | '+' | '-' | digit | '('
 ### power
 variable | '+' | '-' | digit | '('
-### primary
-variable | '+' | '-' | digit | '('
 

@@ -10,6 +10,10 @@ public class Number implements Primary {
         this.value = value;
     }
 
+    public Number multiply(int n) {
+        return new Number(n * value);
+    }
+
     @Override
     public int value(Map<Variable, Integer> context) {
         return value;
@@ -29,5 +33,10 @@ public class Number implements Primary {
     @Override
     public int hashCode() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return Integer.toString(value);
     }
 }

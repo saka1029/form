@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.SequencedSet;
 
 /**
@@ -74,10 +75,7 @@ public class Parser {
     }
 
     static boolean isElement(int ch) {
-        return isDigit(ch)
-            || ch == '+' || ch == '-'
-            || isVariable(ch)
-            || ch == '(';
+        return isDigit(ch) || isVariable(ch) || ch == '(';
     }
 
     int parseNumber() {
@@ -90,44 +88,67 @@ public class Parser {
     }
 
     Primary parsePrimary() {
-        if (isVariable(ch)) {
-            String variable = Character.toString(ch);
-            get();
-            return Variable.of(variable);
-        } else if (eat('(')) {
+        if (eat('(')) {
             Polynomial polynomial = read();
             if (!eat(')'))
                 throw new FormException(("')' expected"));
             return new Paren(polynomial);
+        } else if (isVariable(ch)) {
+            String name = Character.toString(ch);
+            get();
+            return Variable.of(name);
+        } else if (isDigit(ch)) {
+            return new Number(parseNumber());
         } else
-            return new Paren(read());
-            // throw new FormException(("variable or '(' expected"));
+            // return new Paren(read());
+            throw new FormException(("variable, number or '(' expected"));
     }
 
     Power parsePower() {
-        return null;
+        spaces();
+        Primary primary = parsePrimary();
+        if (eat('^')) {
+            int sign = eat('-') ? -1 : eat('+') ? 1 : 1;
+            int value = sign * parseNumber();
+            return value == 1 ? primary : new PowerImpl(value, primary);
+        }
+        return primary;
     }
 
-    Factor parseFactor(FactorOperator operator) {
+    static Number MINUS_ONE = new Number(-1);
+
+    Factor parseFactor(boolean positive, FactorOperator operator) {
         spaces();
-        SequencedSet<Power> powers = new LinkedHashSet<>();
+        LinkedList<Power> powers = new LinkedList<>();
         powers.add(parsePower());
         while (isElement(ch))
             powers.add(parsePower());
-        return operator == FactorOperator.MULTIPLY
-            ? null
-            : new FactorImpl(operator, powers);
+        if (powers.size() == 1 && operator == FactorOperator.MULTIPLY) {
+            Power first = powers.getFirst();
+            if (positive)
+                return first;
+            else if (first instanceof Number n)
+                return n.multiply(-1);
+        }
+        if (!positive) {
+            Power first = powers.getFirst();
+            if (first instanceof Number n)
+                powers.set(0, n.multiply(-1));
+            else
+                powers.addFirst(MINUS_ONE);
+        }
+        return new FactorImpl(operator, powers);
     }
 
-    Term parseTerm() {
+    Term parseTerm(boolean positive) {
         spaces();
         SequencedSet<Factor> factors = new LinkedHashSet<>();
-        factors.add(parseFactor(FactorOperator.MULTIPLY));
+        factors.add(parseFactor(positive, FactorOperator.MULTIPLY));
         while (true)
             if (eat('*') || isElement(ch))
-                factors.add(parseFactor(FactorOperator.MULTIPLY));
+                factors.add(parseFactor(positive, FactorOperator.MULTIPLY));
             else if (eat('/'))
-                factors.add(parseFactor(FactorOperator.DIVIDE));
+                factors.add(parseFactor(positive, FactorOperator.DIVIDE));
             else
                 break;
         return factors.size() == 1
@@ -136,11 +157,20 @@ public class Parser {
     }
 
     Polynomial parsePolynomial() {
-        SequencedSet<Term> terms = new LinkedHashSet<>();
-        terms.add(parseTerm());
         spaces();
-        while (isElement(ch))
-                terms.add(parseTerm());
+        SequencedSet<Term> terms = new LinkedHashSet<>();
+        boolean positive = true;;
+        if (eat('-'))
+            positive = false;
+        terms.add(parseTerm(positive));
+        spaces();
+        while (true)
+            if (eat('+'))
+                terms.add(parseTerm(true));
+            else if (eat('-'))
+                terms.add(parseTerm(false));
+            else
+                break;
         return terms.size() == 1
             ? terms.getFirst()
             : new PolynomialImpl(terms);

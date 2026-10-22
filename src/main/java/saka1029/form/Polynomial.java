@@ -10,7 +10,7 @@ public interface Polynomial {
 
     public static <T extends Polynomial> String toDebugString(Collection<T> collection) {
         return collection.stream()
-            .map(e -> e.toDebugString())
+            .map(Polynomial::toDebugString)
             .collect(Collectors.joining(", ", "[", "]"));
     }
 }

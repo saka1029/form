@@ -14,20 +14,20 @@ public class PowerImpl implements Power {
 
     @Override
     public int value(Map<Variable, Integer> context) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'value'");
+        return (int) Math.pow(primary.value(context), power);
     }
 
     @Override
     public String toDebugString() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toDebugString'");
+        return "Power(%d, %s)".formatted(power, primary.toDebugString());
     }
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+        String p = primary.toString();
+        if (power != 1)
+            p += "^" + power;
+        return p;
     }
 
 }

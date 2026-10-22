@@ -11,7 +11,7 @@ public class TestTerm {
 
     @Test 
     public void testToDebugString() {
-        assertEquals("Polynomial([Term(-1, [Variable(a)]), Variable(b)])", parse("-a + b").toDebugString());
+        assertEquals("Polynomial([Factor(*, [-1, Variable(a)]), Variable(b)])", parse("-a + b").toDebugString());
     }
 
     @Test 

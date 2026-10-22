@@ -1,16 +1,16 @@
 package saka1029.form;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class FactorImpl implements Factor {
 
     public final FactorOperator operator;
-    public final Set<Power> powers;
+    public final List<Power> powers;
 
-    public FactorImpl(FactorOperator operator, Set<Power> powers) {
+    public FactorImpl(FactorOperator operator, List<Power> powers) {
         this.operator = operator;
         this.powers = powers;
     }
@@ -45,6 +45,8 @@ public class FactorImpl implements Factor {
     public String toString() {
         return "%s%s".formatted(
             operator == FactorOperator.DIVIDE ? "/" : "",
-            powers.stream().map(Object::toString).collect(Collectors.joining()));
+            powers.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining()));
     }
 }

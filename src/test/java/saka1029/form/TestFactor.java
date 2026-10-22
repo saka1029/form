@@ -13,15 +13,15 @@ public class TestFactor {
     public void testToDebugString() {
         assertEquals("Variable(a)", parse("a").toDebugString());
         assertEquals("Paren(Paren(Variable(a)))", parse("((a))").toDebugString());
-        assertEquals("Term(1, [Variable(a), Variable(b)])", parse("ab").toDebugString());
-        assertEquals("Factor(*, 2, Variable(a))", parse("a^2").toDebugString());
-        assertEquals("Term(1, [Factor(*, 2, Variable(a)), Factor(*, 3, Variable(b))])", parse("a^2b^3").toDebugString());
+        assertEquals("Factor(*, [Variable(a), Variable(b)])", parse("ab").toDebugString());
+        assertEquals("Power(2, Variable(a))", parse("a^2").toDebugString());
+        assertEquals("Factor(*, [Power(2, Variable(a)), Power(3, Variable(b))])", parse("a^2b^3").toDebugString());
         assertEquals("Variable(a)", parse("a^1").toDebugString());
         assertEquals("Paren(Variable(a))", parse("(a)").toDebugString());
-        assertEquals("Term(1, [Paren(Variable(a)), Variable(b)])", parse("(a)b").toDebugString());
-        assertEquals("Factor(*, 2, Paren(Term(1, [Variable(a), Variable(b)])))", parse("(ab)^2").toDebugString());
-        assertEquals("Term(1, [Variable(a), Factor(/, 1, Variable(b))])", parse("a/b").toDebugString());
-        assertEquals("Term(1, [Variable(a), Factor(/, 1, Paren(Term(3, [Variable(b)])))])", parse("a/3b").toDebugString());
+        assertEquals("Factor(*, [Paren(Variable(a)), Variable(b)])", parse("(a)b").toDebugString());
+        assertEquals("Power(2, Paren(Factor(*, [Variable(a), Variable(b)])))", parse("(ab)^2").toDebugString());
+        assertEquals("Term([Variable(a), Factor(/, [Variable(b)])])", parse("a/b").toDebugString());
+        assertEquals("Term([Variable(a), Factor(/, [3, Variable(b)])])", parse("a/3b").toDebugString());
     }
     
     @Test 
@@ -36,7 +36,7 @@ public class TestFactor {
         assertEquals("(a)b", parse("(a)b").toString());
         assertEquals("(ab)^2", parse("(ab)^2").toString());
         assertEquals("a/b", parse("a/b").toString());
-        assertEquals("a/(3b)", parse("a/3b").toString());
+        assertEquals("a/3b", parse("a/3b").toString());
     }
     
     @Test 

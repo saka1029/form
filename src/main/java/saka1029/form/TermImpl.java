@@ -3,6 +3,7 @@ package saka1029.form;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TermImpl implements Term {
 
@@ -51,6 +52,8 @@ public class TermImpl implements Term {
 
     @Override
     public String toString() {
-        return Polynomial.toDebugString(factors);
+        return factors.stream()
+            .map(Object::toString)
+            .collect(Collectors.joining());
     }
 }

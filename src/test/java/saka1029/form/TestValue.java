@@ -5,12 +5,9 @@ import static org.junit.Assert.assertEquals;
 import java.util.Map;
 
 import org.junit.Test;
+import static saka1029.form.Parser.*;
 
 public class TestValue {
-
-    Polynomial parse(String s) {
-        return new Parser(s).read();
-    }
 
     @Test 
     public void testValue() {
