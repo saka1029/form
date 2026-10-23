@@ -51,7 +51,9 @@ public class FactorImpl implements Factor {
         StringBuilder sb = new StringBuilder();
         int i = 0;
         for (Power e : unMap(powers))
-            sb.append(i++ == 0 && e.equals(Number.MINUS_ONE) ? "-" : e.toString());
+            sb.append(i++ == 0 && e.equals(Number.MINUS_ONE)
+                ? "-"
+                : e.toString());
         return sb.toString();
     }
 }
