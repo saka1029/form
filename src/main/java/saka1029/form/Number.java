@@ -4,6 +4,9 @@ import java.util.Map;
 
 public class Number implements Primary {
 
+    public static final Number ONE = new Number(1);
+    public static final Number MINUS_ONE = new Number(-1);
+
     public final int value;
 
     public Number(int value) {

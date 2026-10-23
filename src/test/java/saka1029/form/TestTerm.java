@@ -11,7 +11,7 @@ public class TestTerm {
 
     @Test 
     public void testToDebugString() {
-        assertEquals("Polynomial([Factor(*, [Number(-1), Variable(a)]), Variable(b)])", parse("-a + b").toDebugString());
+        assertEquals("Polynomial([Factor([Number(-1), Variable(a)]), Variable(b)])", parse("-a + b").toDebugString());
         assertEquals("Polynomial([Variable(a), Variable(a)])", parse("a + a").toDebugString());
         assertEquals("Polynomial([Power(2, Variable(x)), Number(1)])", parse("x^2 + 1").toDebugString());
     }

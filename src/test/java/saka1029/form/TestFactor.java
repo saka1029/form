@@ -13,15 +13,15 @@ public class TestFactor {
     public void testToDebugString() {
         assertEquals("Variable(a)", parse("a").toDebugString());
         assertEquals("Paren(Paren(Variable(a)))", parse("((a))").toDebugString());
-        assertEquals("Factor(*, [Variable(a), Variable(b)])", parse("ab").toDebugString());
+        assertEquals("Factor([Variable(a), Variable(b)])", parse("ab").toDebugString());
         assertEquals("Power(2, Variable(a))", parse("a^2").toDebugString());
-        assertEquals("Factor(*, [Power(2, Variable(a)), Power(3, Variable(b))])", parse("a^2b^3").toDebugString());
+        assertEquals("Factor([Power(2, Variable(a)), Power(3, Variable(b))])", parse("a^2b^3").toDebugString());
         assertEquals("Variable(a)", parse("a^1").toDebugString());
         assertEquals("Paren(Variable(a))", parse("(a)").toDebugString());
-        assertEquals("Factor(*, [Paren(Variable(a)), Variable(b)])", parse("(a)b").toDebugString());
-        assertEquals("Power(2, Paren(Factor(*, [Variable(a), Variable(b)])))", parse("(ab)^2").toDebugString());
-        assertEquals("Term([Variable(a), Factor(/, [Variable(b)])])", parse("a/b").toDebugString());
-        assertEquals("Term([Variable(a), Factor(/, [Number(3), Variable(b)])])", parse("a/3b").toDebugString());
+        assertEquals("Factor([Paren(Variable(a)), Variable(b)])", parse("(a)b").toDebugString());
+        assertEquals("Power(2, Paren(Factor([Variable(a), Variable(b)])))", parse("(ab)^2").toDebugString());
+        assertEquals("Term(Variable(a), Variable(b))", parse("a/b").toDebugString());
+        assertEquals("Term(Variable(a), Factor([Number(3), Variable(b)]))", parse("a/3b").toDebugString());
     }
     
     @Test 

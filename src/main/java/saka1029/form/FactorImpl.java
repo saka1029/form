@@ -8,18 +8,16 @@ import static saka1029.form.Common.*;
 
 public class FactorImpl implements Factor {
 
-    public final FactorOperator operator;
     public final Map<Power, Integer> powers;
 
-    public FactorImpl(FactorOperator operator, List<Power> powers) {
-        this.operator = operator;
+    public FactorImpl(List<Power> powers) {
         this.powers = enMap(powers);
     }
 
     @Override
     public String toDebugString() {
-        return "Factor(%s, %s)".formatted(
-            operator, toDebugStringCollection(powers));
+        return "Factor(%s)".formatted(
+            toDebugStringCollection(powers));
     }
 
     @Override
@@ -33,26 +31,23 @@ public class FactorImpl implements Factor {
     @Override
     public boolean equals(Object obj) {
         return obj instanceof FactorImpl f
-            && f.operator == operator
             && f.powers.equals(powers);
     }
 
     @Override
     public String lisp() {
-        return "(%s %s)".formatted(operator, lispAll(powers));
+        return "(%s)".formatted(lispAll(powers));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(operator, powers);
+        return Objects.hash(powers);
     }
 
     @Override
     public String toString() {
-        return "%s%s".formatted(
-            operator == FactorOperator.DIVIDE ? "/" : "",
-            unMap(powers).stream()
-                .map(Object::toString)
-                .collect(Collectors.joining()));
+        return unMap(powers).stream()
+            .map(Object::toString)
+            .collect(Collectors.joining());
     }
 }

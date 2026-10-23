@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * polynomial = terms
@@ -115,9 +116,7 @@ public class Parser {
         return primary;
     }
 
-    static Number MINUS_ONE = new Number(-1);
-
-    Factor parseFactor(boolean positive, FactorOperator operator) {
+    List<Power> parseFactor(boolean positive) {
         spaces();
         LinkedList<Power> powers = new LinkedList<>();
         Power first = parsePower();
@@ -125,28 +124,36 @@ public class Parser {
             if (first instanceof Number n)
                 first = n.multiply(-1);
             else
-                powers.add(MINUS_ONE);
+                powers.add(Number.MINUS_ONE);
         powers.add(first);
         while (isFactor(ch))
             powers.add(parsePower());
-        return powers.size() == 1 && operator == FactorOperator.MULTIPLY
-            ? first
-            : new FactorImpl(operator, powers);
+        return powers;
     }
 
     Term parseTerm(boolean positive) {
         spaces();
-        LinkedList<Factor> factors = new LinkedList<>();
-        Factor first = parseFactor(positive, FactorOperator.MULTIPLY);
-        factors.add(first);
+        LinkedList<Power> numerator = new LinkedList<>();
+        LinkedList<Power> denominator = new LinkedList<>();
+        numerator.addAll(parseFactor(positive));
         while (true)
             if (eat('*') || isFactor(ch))
-                factors.add(parseFactor(positive, FactorOperator.MULTIPLY));
+                numerator.addAll(parseFactor(true));
             else if (eat('/'))
-                factors.add(parseFactor(positive, FactorOperator.DIVIDE));
+                denominator.addAll(parseFactor(true));
             else
                 break;
-        return factors.size() == 1 ? first : new TermImpl(factors);
+        Factor num = numerator.size() == 1
+            ? numerator.getFirst()
+            : new FactorImpl(numerator);
+        if (denominator.isEmpty())
+            denominator.add(Number.ONE);
+        Factor den = denominator.size() == 1
+            ? denominator.getFirst()
+            : new FactorImpl(denominator);
+        return denominator.size() == 1 && denominator.getFirst().equals(Number.ONE)
+            ? num
+            : new TermImpl(num, den);
     }
 
     Polynomial parsePolynomial() {

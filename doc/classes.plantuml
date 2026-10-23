@@ -1,8 +1,4 @@
 @startuml form
-enum FactorOperator {
-    MULTIPLY
-    DIVIDE
-}
 interface Polynomial
 class PolynomialImpl
 PolynomialImpl .left.|> Polynomial
@@ -11,12 +7,11 @@ interface Term
 Term -|> Polynomial
 class TermImpl
 TermImpl .left.|> Term
-TermImpl --> "*" Factor : factors
+TermImpl --> "1" Factor : numerators
+TermImpl --> "1" Factor : denominators
 interface Factor
 Factor -|> Term
-class FactorImpl {
-    FactorOperator operator
-}
+class FactorImpl
 FactorImpl .left.|> Factor
 FactorImpl --> "*" Power : powers
 interface Power

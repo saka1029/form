@@ -1,58 +1,52 @@
 package saka1029.form;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import static saka1029.form.Common.*;
+import java.util.Objects;
 
 public class TermImpl implements Term {
 
-    public final Map<Factor, Integer> factors;
+    public final Factor numerator;
+    public final Factor denominator;
 
-    public TermImpl(List<Factor> factors) {
-        this.factors = enMap(factors);
+    public TermImpl(Factor numerator, Factor denominator) {
+        this.numerator = numerator;
+        this.denominator = denominator;
     }
 
     @Override
     public String toDebugString() {
-        return "Term(%s)".formatted(
-            toDebugStringCollection(factors));
+        return "Term(%s, %s)".formatted(
+            numerator.toDebugString(),
+            denominator.toDebugString());
     }
 
     @Override
     public int value(Map<Variable, Integer> context) {
-        int result = 1;
-        for (Factor f : unMap(factors))
-            if (f instanceof FactorImpl fi)
-                if (fi.operator == FactorOperator.MULTIPLY)
-                    result *= f.value(context);
-                else
-                    result /= f.value(context);
-            else
-                result *= f.value(context);
-        return result;
+        int n = numerator.value(context);
+        int d = denominator.value(context);
+        return n / d;
     }
 
     @Override
     public String lisp() {
-        return "(+ %s)".formatted(lispAll(factors));
+        return "(+ (/ %s %s))".formatted(
+            numerator.lisp(), denominator.lisp());
     }
 
     @Override
     public boolean equals(Object obj) {
         return obj instanceof TermImpl t
-            && t.factors.equals(factors);
+            && t.numerator.equals(numerator)
+            && t.denominator.equals(denominator);
     }
 
     @Override
     public int hashCode() {
-        return factors.hashCode();
+        return Objects.hash(numerator, denominator);
     }
 
     @Override
     public String toString() {
-        return unMap(factors).stream()
-            .map(Object::toString)
-            .collect(Collectors.joining());
+        return "%s/%s".formatted(numerator, denominator);
     }
 }
