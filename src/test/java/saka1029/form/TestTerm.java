@@ -31,16 +31,10 @@ public class TestTerm {
         assertEquals(55, parse("(a + b^2)(a+b)").value(context));
     }
 
-    void debug(String s) {
-        Polynomial p = parse(s);
-        System.out.println(s);
-        System.out.println(p.toDebugString());
-        System.out.println(p.lisp());
-    }
     @Test 
-    public void testTree() {
-        debug("x^2+3");
-        debug("-a/3b");
+    public void testLisp() {
+        assertEquals("(+ (^ x 2) 3)", parse("x^2+3").lisp());
+        assertEquals("(+ (/ (* -1 a) (* 3 b)))", parse("-a/3b").lisp());
     }
 
 }

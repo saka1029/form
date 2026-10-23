@@ -36,7 +36,7 @@ public class FactorImpl implements Factor {
 
     @Override
     public String lisp() {
-        return "(%s)".formatted(lispAll(powers));
+        return "(* %s)".formatted(lispAll(powers));
     }
 
     @Override
