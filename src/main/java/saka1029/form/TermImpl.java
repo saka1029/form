@@ -26,10 +26,10 @@ public class TermImpl implements Term {
     }
 
     @Override
-    public String lisp() {
+    public String toLisp() {
         return denominator.equals(Number.ONE)
-            ? "(+ %s)".formatted(numerator.lisp())
-            : "(+ (/ %s %s))".formatted(numerator.lisp(), denominator.lisp());
+            ? "(+ %s)".formatted(numerator.toLisp())
+            : "(+ (/ %s %s))".formatted(numerator.toLisp(), denominator.toLisp());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package saka1029.form;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class PowerImpl implements Power {
 
@@ -23,8 +24,20 @@ public class PowerImpl implements Power {
     }
 
     @Override
-    public String lisp() {
-        return "(^ %s %d)".formatted(primary.lisp(), power);
+    public String toLisp() {
+        return "(^ %s %d)".formatted(primary.toLisp(), power);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PowerImpl p
+            && p.power == power
+            && p.primary.equals(primary);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(power, primary);
     }
 
     @Override

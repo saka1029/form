@@ -28,7 +28,7 @@ public class Number implements Primary {
     }
 
     @Override
-    public String lisp() {
+    public String toLisp() {
         return Integer.toString(value);
     }
 

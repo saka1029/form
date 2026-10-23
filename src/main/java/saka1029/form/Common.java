@@ -1,6 +1,7 @@
 package saka1029.form;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,16 +18,20 @@ public class Common {
         return map;
     }
 
-    public static <T> List<T> unMap(Map<T, Integer> map) {
+    public static <T> LinkedList<T> unMap(Map<T, Integer> map) {
         return map.entrySet().stream()
             .flatMap(e -> IntStream.range(0, e.getValue())
                 .mapToObj(i -> e.getKey()))
-            .toList();
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
-    public static <T extends Polynomial> String toDebugStringCollection(Map<T, Integer> map) {
+    public static <T extends Polynomial> String toDebugStringAll(Map<T, Integer> map) {
         return unMap(map).stream()
             .map(Polynomial::toDebugString)
             .collect(Collectors.joining(", ", "[", "]"));
+    }
+
+    public static <T extends Polynomial> String toLispAll(Map<T, Integer> map) {
+        return unMap(map).stream().map(Polynomial::toLisp).collect(Collectors.joining(" "));
     }
 }

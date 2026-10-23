@@ -29,7 +29,7 @@ public class Variable implements Primary {
     }
 
     @Override
-    public String lisp() {
+    public String toLisp() {
         return name;
     }
 

@@ -33,9 +33,9 @@ public class TestTerm {
 
     @Test 
     public void testLisp() {
-        assertEquals("(+ (^ x 2) 3)", parse("x^2+3").lisp());
-        assertEquals("(* -1 a b)", parse("-ab").lisp());
-        assertEquals("(+ (/ (* -1 a) (* 3 b)))", parse("-a/3b").lisp());
+        assertEquals("(+ (^ x 2) 3)", parse("x^2+3").toLisp());
+        assertEquals("(* -1 a b)", parse("-ab").toLisp());
+        assertEquals("(+ (/ (* -1 a) (* 3 b)))", parse("-a/3b").toLisp());
     }
 
 }

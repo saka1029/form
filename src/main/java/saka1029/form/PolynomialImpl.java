@@ -17,7 +17,7 @@ public class PolynomialImpl implements Polynomial {
     @Override
     public String toDebugString() {
         return "Polynomial(%s)".formatted(
-            toDebugStringCollection(terms));
+            toDebugStringAll(terms));
     }
 
     @Override
@@ -28,8 +28,8 @@ public class PolynomialImpl implements Polynomial {
     }
 
     @Override
-    public String lisp() {
-        return "(+ %s)".formatted(lispAll(terms));
+    public String toLisp() {
+        return "(+ %s)".formatted(toLispAll(terms));
     }
 
     @Override

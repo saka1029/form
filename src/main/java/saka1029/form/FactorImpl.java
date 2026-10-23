@@ -1,5 +1,7 @@
 package saka1029.form;
 
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -17,7 +19,7 @@ public class FactorImpl implements Factor {
     @Override
     public String toDebugString() {
         return "Factor(%s)".formatted(
-            toDebugStringCollection(powers));
+            toDebugStringAll(powers));
     }
 
     @Override
@@ -35,8 +37,8 @@ public class FactorImpl implements Factor {
     }
 
     @Override
-    public String lisp() {
-        return "(* %s)".formatted(lispAll(powers));
+    public String toLisp() {
+        return "(* %s)".formatted(toLispAll(powers));
     }
 
     @Override
@@ -46,8 +48,10 @@ public class FactorImpl implements Factor {
 
     @Override
     public String toString() {
-        return unMap(powers).stream()
-            .map(Object::toString)
-            .collect(Collectors.joining());
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (Power e : unMap(powers))
+            sb.append(i++ == 0 && e.equals(Number.MINUS_ONE) ? "-" : e.toString());
+        return sb.toString();
     }
 }
