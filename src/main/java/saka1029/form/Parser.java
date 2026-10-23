@@ -146,12 +146,10 @@ public class Parser {
         Factor num = numerator.size() == 1
             ? numerator.getFirst()
             : new FactorImpl(numerator);
-        if (denominator.isEmpty())
-            denominator.add(Number.ONE);
-        Factor den = denominator.size() == 1
-            ? denominator.getFirst()
+        Factor den = denominator.isEmpty() ? Number.ONE 
+            : denominator.size() == 1 ? denominator.getFirst()
             : new FactorImpl(denominator);
-        return denominator.size() == 1 && denominator.getFirst().equals(Number.ONE)
+        return den.equals(Number.ONE)
             ? num
             : new TermImpl(num, den);
     }

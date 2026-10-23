@@ -22,15 +22,14 @@ public class TermImpl implements Term {
 
     @Override
     public int value(Map<Variable, Integer> context) {
-        int n = numerator.value(context);
-        int d = denominator.value(context);
-        return n / d;
+        return numerator.value(context) / denominator.value(context);
     }
 
     @Override
     public String lisp() {
-        return "(+ (/ %s %s))".formatted(
-            numerator.lisp(), denominator.lisp());
+        return denominator.equals(Number.ONE)
+            ? "(+ %s)".formatted(numerator.lisp())
+            : "(+ (/ %s %s))".formatted(numerator.lisp(), denominator.lisp());
     }
 
     @Override
@@ -47,6 +46,8 @@ public class TermImpl implements Term {
 
     @Override
     public String toString() {
-        return "%s/%s".formatted(numerator, denominator);
+        return denominator.equals(Number.ONE)
+            ? numerator.toString()
+            : "%s/%s".formatted(numerator, denominator);
     }
 }
