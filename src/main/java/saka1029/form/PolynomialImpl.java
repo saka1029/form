@@ -28,6 +28,11 @@ public class PolynomialImpl implements Polynomial {
     }
 
     @Override
+    public String lisp() {
+        return "(+ %s)".formatted(lispAll(terms));
+    }
+
+    @Override
     public boolean equals(Object obj) {
         return obj instanceof PolynomialImpl p
             && p.terms.equals(terms);

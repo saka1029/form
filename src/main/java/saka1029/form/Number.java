@@ -25,6 +25,11 @@ public class Number implements Primary {
     }
 
     @Override
+    public String lisp() {
+        return Integer.toString(value);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         return obj instanceof Number n
             && n.value == value;

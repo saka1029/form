@@ -23,6 +23,11 @@ public class PowerImpl implements Power {
     }
 
     @Override
+    public String lisp() {
+        return "(^ %s %d)".formatted(primary.lisp(), power);
+    }
+
+    @Override
     public String toString() {
         String p = primary.toString();
         if (power != 1)

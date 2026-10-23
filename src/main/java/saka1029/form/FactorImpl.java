@@ -38,6 +38,11 @@ public class FactorImpl implements Factor {
     }
 
     @Override
+    public String lisp() {
+        return "(%s %s)".formatted(operator, lispAll(powers));
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(operator, powers);
     }

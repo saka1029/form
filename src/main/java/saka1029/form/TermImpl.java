@@ -34,6 +34,11 @@ public class TermImpl implements Term {
     }
 
     @Override
+    public String lisp() {
+        return "(+ %s)".formatted(lispAll(factors));
+    }
+
+    @Override
     public boolean equals(Object obj) {
         return obj instanceof TermImpl t
             && t.factors.equals(factors);

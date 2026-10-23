@@ -16,6 +16,11 @@ public class Paren implements Primary {
     }
 
     @Override
+    public String lisp() {
+        return "(%s)".formatted(polynomial.lisp());
+    }
+
+    @Override
     public int value(Map<Variable, Integer> context) {
         return polynomial.value(context);
     }

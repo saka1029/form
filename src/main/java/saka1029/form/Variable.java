@@ -29,6 +29,11 @@ public class Variable implements Primary {
     }
 
     @Override
+    public String lisp() {
+        return name;
+    }
+
+    @Override
     public String toString() {
         return name;
     }
