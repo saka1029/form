@@ -11,7 +11,9 @@ TermImpl --> "1" Factor : numerators
 TermImpl --> "1" Factor : denominators
 interface Factor
 Factor -|> Term
-class FactorImpl
+class FactorImpl {
+    int coefficient
+}
 FactorImpl .left.|> Factor
 FactorImpl --> "*" Power : powers
 interface Power

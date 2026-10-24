@@ -4,7 +4,7 @@
 polynomial = [ '-' ] term { ( '+' | '-' ) term }
 term       = factor { ( '/' | [ '*' ] )  factor }
 factor     = power { power }
-power      = primary [ '^' number ]
+power      = primary [ '^' [ '+' | '-' ] number ]
 primary    = variable | number | '(' polynomial ')'
 variable   = 'a' ... 'z' | 'A' ... 'Z'
 number     = digit { digit }
