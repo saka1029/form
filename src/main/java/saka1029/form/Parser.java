@@ -91,7 +91,8 @@ public class Parser {
             Polynomial polynomial = read();
             if (!eat(')'))
                 throw new FormException(("')' expected"));
-            return new Paren(polynomial);
+            return polynomial instanceof Primary p ? p
+                : new Paren(polynomial);
         } else if (isVariable(ch)) {
             String name = Character.toString(ch);
             get();

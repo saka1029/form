@@ -1,11 +1,8 @@
 package saka1029.form;
 
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import static saka1029.form.Common.*;
 
 public class FactorImpl implements Factor {

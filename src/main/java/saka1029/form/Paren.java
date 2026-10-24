@@ -18,7 +18,7 @@ public class Paren implements Primary {
 
     @Override
     public String toLisp() {
-        return "(%s)".formatted(polynomial.toLisp());
+        return polynomial.toLisp();
     }
 
     @Override
