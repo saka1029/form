@@ -81,6 +81,10 @@ public class TestPolynomial {
         assertEquals("Polynomial([Factor([Number(-1), Variable(a)]), Variable(b)])", parse("-a + b").toDebugString());
         assertEquals("Polynomial([Variable(a), Variable(a)])", parse("a + a").toDebugString());
         assertEquals("Polynomial([Power(2, Variable(x)), Number(1)])", parse("x^2 + 1").toDebugString());
+        assertEquals("Factor([Number(-3), Paren(Polynomial([Variable(x), Number(1)]))])",
+            parse("-3(x + 1)").toDebugString());
+        assertEquals("Factor([Paren(Polynomial([Variable(x), Number(1)])), Paren(Polynomial([Variable(x), Number(1)]))])",
+            parse("(x + 1)(x + 1)").toDebugString());
     }
     
     @Test 
