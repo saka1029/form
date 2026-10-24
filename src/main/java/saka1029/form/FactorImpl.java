@@ -11,6 +11,10 @@ public class FactorImpl implements Factor {
 
     public FactorImpl(List<Power> powers) {
         this.powers = enMap(powers);
+        if (this.powers.size() > 1)
+            this.powers.remove(Number.ONE);
+        if (this.powers.containsKey(Number.ONE))
+            this.powers.put(Number.ONE, 1);
     }
 
     @Override
