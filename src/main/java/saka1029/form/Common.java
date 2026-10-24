@@ -59,49 +59,53 @@ public class Common {
             case FactorImpl l:
                 switch (right) {
                     case Paren r: return multiply(l, r.polynomial);
-                    case Primary r:
-                        break;
-                    case PowerImpl r:
-                        break;
+                    // case Primary r:
+                    //     List<Power> pp = unMap(l.powers);
+                    //     pp.add(r);
+                    //     return new FactorImpl(pp);
+                    case Power r:
+                        List<Power> pq = unMap(l.powers);
+                        pq.add(r);
+                        return new FactorImpl(pq);
                     case FactorImpl r:
-                        break;
+                        List<Power> mult = unMap(l.powers);
+                        mult.addAll(unMap(r.powers));
+                        return new FactorImpl(mult);
                     case PolynomialImpl r: return multiply(r, l);
                     default: throw new FormException("unknown class '%s'", right);
                 }
-                break;
             case TermImpl l:
                 switch (right) {
                     case Paren r: return multiply(l, r.polynomial);
-                    case Primary r:
-                        break;
-                    case PowerImpl r:
-                        break;
-                    case FactorImpl r:
-                        break;
-                    case TermImpl r:
-                        break;
+                    // case Primary r:
+                    //     break;
+                    // case PowerImpl r:
+                    //     break;
+                    case Factor r: return new TermImpl(
+                        (Factor)multiply(l.numerator, r), l.denominator);
+                    case TermImpl r: return new TermImpl(
+                        (Factor)multiply(l.numerator, r.numerator),
+                        (Factor)multiply(l.denominator, r.denominator)); 
                     case PolynomialImpl r: return multiply(r, l);
                     default: throw new FormException("unknown class '%s'", right);
                 }
-                break;
             case PolynomialImpl l:
                 switch (right) {
                     case Paren r: return multiply(left, r.polynomial);
-                    case Primary r:
-                        break;
-                    case PowerImpl r:
-                        break;
-                    case FactorImpl r:
-                        break;
-                    case TermImpl r:
-                        break;
-                    case PolynomialImpl r:
-                        break;
+                    case Primary r: return new PolynomialImpl(unMap(l.terms).stream()
+                        .map(t -> (Term)multiply(t, r)).toList());
+                    case PowerImpl r: return new PolynomialImpl(unMap(l.terms).stream()
+                        .map(t -> (Term)multiply(t, r)).toList());
+                    case FactorImpl r: return new PolynomialImpl(unMap(l.terms).stream()
+                        .map(t -> (Term)multiply(t, r)).toList());
+                    case TermImpl r: return new PolynomialImpl(unMap(l.terms).stream()
+                        .map(t -> (Term)multiply(t, r)).toList());
+                    case PolynomialImpl r: return new PolynomialImpl(unMap(l.terms).stream()
+                        .flatMap(x -> unMap(r.terms).stream().map(y -> (Term)multiply(x, y)))
+                        .toList());
                     default: throw new FormException("unknown class '%s'", right);
                 }
-                break;
             default: throw new FormException("unknown class '%s'", left);
-        };
-        return null;
+        }
     }
 }
