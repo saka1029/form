@@ -12,11 +12,6 @@ public class Paren implements Primary {
     }
 
     @Override
-    public String toDebugString() {
-        return "Paren(%s)".formatted(polynomial.toDebugString());
-    }
-
-    @Override
     public String toLisp() {
         return polynomial.toLisp();
     }
@@ -39,6 +34,6 @@ public class Paren implements Primary {
 
     @Override
     public String toString() {
-        return "(%s)".formatted(polynomial);
+        return "Paren(%s)".formatted(polynomial);
     }
 }

@@ -14,10 +14,8 @@ public class TermImpl implements Term {
     }
 
     @Override
-    public String toDebugString() {
-        return "Term(%s, %s)".formatted(
-            numerator.toDebugString(),
-            denominator.toDebugString());
+    public String toString() {
+        return "Term(%s, %s)".formatted( numerator, denominator);
     }
 
     @Override
@@ -42,12 +40,5 @@ public class TermImpl implements Term {
     @Override
     public int hashCode() {
         return Objects.hash(numerator, denominator);
-    }
-
-    @Override
-    public String toString() {
-        return denominator.equals(Number.ONE)
-            ? numerator.toString()
-            : "%s/%s".formatted(numerator, denominator);
     }
 }

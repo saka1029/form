@@ -7,8 +7,8 @@ interface Term
 Term -|> Polynomial
 class TermImpl
 TermImpl .left.|> Term
-TermImpl --> "1" Factor : numerators
-TermImpl --> "1" Factor : denominators
+TermImpl --> "1" Factor : numerator
+TermImpl --> "1" Factor : denominator
 interface Factor
 Factor -|> Term
 class FactorImpl {

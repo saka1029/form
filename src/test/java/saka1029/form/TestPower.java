@@ -9,9 +9,9 @@ public class TestPower {
 
     @Test 
     public void testToDebugString() {
-        assertEquals("Variable(a)", parse("a^1").toDebugString());
-        assertEquals("Number(3)", parse("3^1").toDebugString());
-        assertEquals("Number(9)", parse("3^2").toDebugString());
+        assertEquals("Variable(a)", parse("a^1").toString());
+        assertEquals("Number(3)", parse("3^1").toString());
+        assertEquals("Number(9)", parse("3^2").toString());
     }
 
 }

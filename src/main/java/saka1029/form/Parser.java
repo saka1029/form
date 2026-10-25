@@ -117,57 +117,54 @@ public class Parser {
         return primary;
     }
 
-    List<Power> parseFactor(boolean positive) {
+    List<Power> parseFactor() {
         spaces();
         LinkedList<Power> powers = new LinkedList<>();
-        Power first = parsePower();
-        if (!positive)
-            if (first instanceof Number n)
-                first = n.multiply(-1);
-            else
-                powers.add(Number.MINUS_ONE);
-        powers.add(first);
+        powers.add(parsePower());
         while (isFactor(ch))
             powers.add(parsePower());
         return powers;
     }
 
-    Term parseTerm(boolean positive) {
+    Term parseTerm(int sign) {
         spaces();
-        LinkedList<Power> numerator = new LinkedList<>();
-        LinkedList<Power> denominator = new LinkedList<>();
-        numerator.addAll(parseFactor(positive));
+        LinkedList<Power> numerators = new LinkedList<>();
+        LinkedList<Power> denominators = new LinkedList<>();
+        numerators.addAll(parseFactor());
         while (true)
             if (eat('*') || isFactor(ch))
-                numerator.addAll(parseFactor(true));
+                numerators.addAll(parseFactor());
             else if (eat('/'))
-                denominator.addAll(parseFactor(true));
+                denominators.addAll(parseFactor());
             else
                 break;
-        Factor num = numerator.size() == 1
-            ? numerator.getFirst()
-            : new FactorImpl(numerator);
-        Factor den = denominator.isEmpty() ? Number.ONE 
-            : denominator.size() == 1 ? denominator.getFirst()
-            : new FactorImpl(denominator);
-        return den.equals(Number.ONE)
-            ? num
-            : new TermImpl(num, den);
+        if (sign == 1 && numerators.size() == 1
+            && (denominators.size() == 0 || denominators.getFirst().equals(Number.ONE)))
+            return numerators.getFirst();
+        Factor num = numerators.size() == 1 && sign == 1
+            ? numerators.getFirst()
+            : new FactorImpl(sign, numerators);
+        Factor den = denominators.size() == 0
+            ? Number.ONE
+            : denominators.size() == 1
+                ? denominators.getFirst()
+                : new FactorImpl(1, denominators);
+        return den == Number.ONE ? num : new TermImpl(num, den);
     }
 
     Polynomial parsePolynomial() {
         spaces();
         LinkedList<Term> terms = new LinkedList<>();
-        boolean positive = true;;
+        int sign = 1;
         if (eat('-'))
-            positive = false;
-        terms.add(parseTerm(positive));
+            sign = -1;
+        terms.add(parseTerm(sign));
         spaces();
         while (true)
             if (eat('+'))
-                terms.add(parseTerm(true));
+                terms.add(parseTerm(1));
             else if (eat('-'))
-                terms.add(parseTerm(false));
+                terms.add(parseTerm(-1));
             else
                 break;
         return terms.size() == 1

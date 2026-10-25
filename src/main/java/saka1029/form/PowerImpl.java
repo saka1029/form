@@ -19,8 +19,8 @@ public class PowerImpl implements Power {
     }
 
     @Override
-    public String toDebugString() {
-        return "Power(%d, %s)".formatted(power, primary.toDebugString());
+    public String toString() {
+        return "Power(%d, %s)".formatted(power, primary);
     }
 
     @Override
@@ -39,13 +39,4 @@ public class PowerImpl implements Power {
     public int hashCode() {
         return Objects.hash(power, primary);
     }
-
-    @Override
-    public String toString() {
-        String p = primary.toString();
-        if (power != 1)
-            p += "^" + power;
-        return p;
-    }
-
 }

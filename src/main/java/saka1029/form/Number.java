@@ -23,7 +23,7 @@ public class Number implements Primary {
     }
 
     @Override
-    public String toDebugString() {
+    public String toString() {
         return "Number(%d)".formatted(value);
     }
 
@@ -41,10 +41,5 @@ public class Number implements Primary {
     @Override
     public int hashCode() {
         return value;
-    }
-
-    @Override
-    public String toString() {
-        return Integer.toString(value);
     }
 }

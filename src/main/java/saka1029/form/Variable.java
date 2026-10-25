@@ -17,7 +17,7 @@ public class Variable implements Primary {
     }
 
     @Override
-    public String toDebugString() {
+    public String toString() {
         return "Variable(%s)".formatted(name);
     }
 
@@ -30,11 +30,6 @@ public class Variable implements Primary {
 
     @Override
     public String toLisp() {
-        return name;
-    }
-
-    @Override
-    public String toString() {
         return name;
     }
 }
