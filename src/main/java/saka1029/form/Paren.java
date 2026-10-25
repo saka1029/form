@@ -7,8 +7,14 @@ public class Paren implements Primary {
 
     public final Polynomial polynomial;
 
-    public Paren(Polynomial polynomial) {
+    private Paren(Polynomial polynomial) {
         this.polynomial = polynomial;
+    }
+
+    public static Primary of(Polynomial polynomial) {
+        return polynomial instanceof Primary primary
+            ? primary
+            : new Paren(polynomial);
     }
 
     @Override

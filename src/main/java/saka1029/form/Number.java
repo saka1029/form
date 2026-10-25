@@ -9,8 +9,12 @@ public class Number implements Primary {
 
     public final int value;
 
-    public Number(int value) {
+    private Number(int value) {
         this.value = value;
+    }
+
+    public static Primary of(int value) {
+        return new Number(value);
     }
 
     public Number multiply(int n) {

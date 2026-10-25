@@ -91,14 +91,13 @@ public class Parser {
             Polynomial polynomial = read();
             if (!eat(')'))
                 throw new FormException(("')' expected"));
-            return polynomial instanceof Primary p ? p
-                : new Paren(polynomial);
+            return Paren.of(polynomial);
         } else if (isVariable(ch)) {
             String name = Character.toString(ch);
             get();
             return Variable.of(name);
         } else if (isDigit(ch)) {
-            return new Number(parseNumber());
+            return Number.of(parseNumber());
         } else
             // return new Paren(read());
             throw new FormException(("variable, number or '(' expected"));
@@ -111,7 +110,7 @@ public class Parser {
             int sign = eat('-') ? -1 : eat('+') ? 1 : 1;
             int power = sign * parseNumber();
             return power == 1 ? primary
-                : primary instanceof Number n ? new Number((int)Math.pow(n.value, power))
+                : primary instanceof Number n ? Number.of((int)Math.pow(n.value, power))
                 : new PowerImpl(power, primary);
         }
         return primary;
