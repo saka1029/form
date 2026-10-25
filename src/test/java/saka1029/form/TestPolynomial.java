@@ -38,7 +38,6 @@ public class TestPolynomial {
         assertNotEquals(parse("a/b"), parse("a"));
         assertNotEquals(parse("a^3"), parse("a^2"));
         assertNotEquals(parse("x^2"), parse("a^2"));
-        System.out.println(parse("a(a+1)").toString());
         assertNotEquals(parse("a(a+2)"), parse("a(a+1)"));
     }
 
