@@ -8,9 +8,17 @@ public class PowerImpl implements Power {
     public final int power;
     public final Primary primary;
 
-    public PowerImpl(int power, Primary primary) {
+    private PowerImpl(int power, Primary primary) {
         this.power = power;
         this.primary = primary;
+    }
+
+    public static Power of(int power, Primary primary) {
+        return power == 1
+            ? primary
+            : primary instanceof Number n
+                ? Number.of((int)Math.pow(n.value, power))
+                : new PowerImpl(power, primary);
     }
 
     @Override

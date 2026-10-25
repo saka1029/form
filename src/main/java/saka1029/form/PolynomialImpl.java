@@ -9,8 +9,14 @@ public class PolynomialImpl implements Polynomial {
 
     public final List<Term> terms;
 
-    public PolynomialImpl(List<Term> terms) {
+    private PolynomialImpl(List<Term> terms) {
         this.terms = terms;
+    }
+
+    public static Polynomial of(List<Term> terms) {
+        return terms.size() == 1
+            ? terms.getFirst()
+            : new PolynomialImpl(terms);
     }
 
     @Override

@@ -109,9 +109,7 @@ public class Parser {
         if (eat('^')) {
             int sign = eat('-') ? -1 : eat('+') ? 1 : 1;
             int power = sign * parseNumber();
-            return power == 1 ? primary
-                : primary instanceof Number n ? Number.of((int)Math.pow(n.value, power))
-                : new PowerImpl(power, primary);
+            return PowerImpl.of(power, primary);
         }
         return primary;
     }
@@ -137,18 +135,16 @@ public class Parser {
                 denominators.addAll(parseFactor());
             else
                 break;
-        if (sign == 1 && numerators.size() == 1
-            && (denominators.size() == 0 || denominators.getFirst().equals(Number.ONE)))
-            return numerators.getFirst();
-        Factor num = numerators.size() == 1 && sign == 1
-            ? numerators.getFirst()
-            : new FactorImpl(sign, numerators);
-        Factor den = denominators.size() == 0
-            ? Number.ONE
-            : denominators.size() == 1
-                ? denominators.getFirst()
-                : new FactorImpl(1, denominators);
-        return den == Number.ONE ? num : new TermImpl(num, den);
+        return TermImpl.of(sign, numerators, denominators);
+        // Factor num = numerators.size() == 1 && sign == 1
+        //     ? numerators.getFirst()
+        //     : new FactorImpl(sign, numerators);
+        // Factor den = denominators.size() == 0
+        //     ? Number.ONE
+        //     : denominators.size() == 1
+        //         ? denominators.getFirst()
+        //         : new FactorImpl(1, denominators);
+        // return den == Number.ONE ? num : new TermImpl(num, den);
     }
 
     Polynomial parsePolynomial() {
@@ -166,9 +162,7 @@ public class Parser {
                 terms.add(parseTerm(-1));
             else
                 break;
-        return terms.size() == 1
-            ? terms.getFirst()
-            : new PolynomialImpl(terms);
+        return PolynomialImpl.of(terms);
     }
 
     public Polynomial read() {

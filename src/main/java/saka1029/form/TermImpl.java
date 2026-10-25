@@ -1,5 +1,6 @@
 package saka1029.form;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -8,9 +9,21 @@ public class TermImpl implements Term {
     public final Factor numerator;
     public final Factor denominator;
 
-    public TermImpl(Factor numerator, Factor denominator) {
+    private TermImpl(Factor numerator, Factor denominator) {
         this.numerator = numerator;
         this.denominator = denominator;
+    }
+
+    public static Term of(int sign, List<Power> numerators, List<Power> denominators) {
+        Factor num = numerators.size() == 1 && sign == 1
+            ? numerators.getFirst()
+            : FactorImpl.of(sign, numerators);
+        Factor den = denominators.size() == 0
+            ? Number.ONE
+            : denominators.size() == 1
+                ? denominators.getFirst()
+                : FactorImpl.of(1, denominators);
+        return den == Number.ONE ? num : new TermImpl(num, den);
     }
 
     @Override

@@ -10,9 +10,13 @@ public class FactorImpl implements Factor {
     public final int coefficient;
     public final List<Power> powers;
 
-    public FactorImpl(int coefficient, List<Power> powers) {
+    private FactorImpl(int coefficient, List<Power> powers) {
         this.coefficient = coefficient;
         this.powers = powers;
+    }
+
+    public static Factor of(int coefficient, List<Power> powers) {
+        return new FactorImpl(coefficient, powers);
     }
 
     @Override
