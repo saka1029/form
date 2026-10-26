@@ -17,11 +17,6 @@ public class Variable implements Primary {
     }
 
     @Override
-    public String toString() {
-        return "Variable(%s)".formatted(name);
-    }
-
-    @Override
     public int value(Map<Variable, Integer> context) {
         if (!context.containsKey(this))
             throw new FormException("variable '%s' not define", name);
@@ -31,5 +26,10 @@ public class Variable implements Primary {
     @Override
     public String toLisp() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Variable(%s)".formatted(name);
     }
 }

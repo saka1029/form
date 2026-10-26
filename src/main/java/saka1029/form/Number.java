@@ -27,11 +27,6 @@ public class Number implements Primary {
     }
 
     @Override
-    public String toString() {
-        return "Number(%d)".formatted(value);
-    }
-
-    @Override
     public String toLisp() {
         return Integer.toString(value);
     }
@@ -45,5 +40,10 @@ public class Number implements Primary {
     @Override
     public int hashCode() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return "Number(%d)".formatted(value);
     }
 }

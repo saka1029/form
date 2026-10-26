@@ -27,11 +27,6 @@ public class PowerImpl implements Power {
     }
 
     @Override
-    public String toString() {
-        return "Power(%d, %s)".formatted(power, primary);
-    }
-
-    @Override
     public String toLisp() {
         return "(^ %s %d)".formatted(primary.toLisp(), power);
     }
@@ -46,5 +41,10 @@ public class PowerImpl implements Power {
     @Override
     public int hashCode() {
         return Objects.hash(power, primary);
+    }
+
+    @Override
+    public String toString() {
+        return "Power(%d, %s)".formatted(power, primary);
     }
 }

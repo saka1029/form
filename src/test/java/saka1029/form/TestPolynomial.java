@@ -46,6 +46,7 @@ public class TestPolynomial {
         assertEquals("Variable(a)", parse("a").toString());
         assertEquals("Variable(a)", parse("((a))").toString());
         assertEquals("Factor(1, [Variable(a), Variable(b)])", parse("ab").toString());
+        assertEquals("Factor(1, [Variable(a), Variable(a), Variable(b)])", parse("aba").toString());
         assertEquals("Power(2, Variable(a))", parse("a^2").toString());
         assertEquals("Factor(1, [Power(2, Variable(a)), Power(3, Variable(b))])", parse("a^2b^3").toString());
         assertEquals("Variable(a)", parse("a^1").toString());
@@ -57,10 +58,9 @@ public class TestPolynomial {
         assertEquals("Polynomial([Factor(-1, [Variable(a)]), Variable(b)])", parse("-a + b").toString());
         assertEquals("Polynomial([Variable(a), Variable(a)])", parse("a + a").toString());
         assertEquals("Polynomial([Power(2, Variable(x)), Number(1)])", parse("x^2 + 1").toString());
-        assertEquals("Factor(-1, [Number(3), Paren(Polynomial([Variable(x), Number(1)]))])",
-            parse("-3(x + 1)").toString());
-        assertEquals("Factor(1, [Paren(Polynomial([Variable(x), Number(1)])), Paren(Polynomial([Variable(x), Number(1)]))])",
-            parse("(x + 1)(x + 1)").toString());
+        assertEquals("Factor(-1, [Number(3), Paren(Polynomial([Variable(x), Number(1)]))])", parse("-3(x + 1)").toString());
+        assertEquals("Factor(1, [Paren(Polynomial([Variable(x), Number(1)])), Paren(Polynomial([Variable(x), Number(1)]))])", parse("(x + 1)(x + 1)").toString());
+        assertEquals("Polynomial([Variable(x), Variable(x), Number(1)])", parse("x + 1 + x").toString());
     }
     
     @Test 
