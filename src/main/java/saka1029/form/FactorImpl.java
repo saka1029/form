@@ -1,7 +1,10 @@
 package saka1029.form;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import static saka1029.form.Common.*;
 
@@ -16,7 +19,35 @@ public class FactorImpl implements Factor {
     }
 
     public static Factor of(int coefficient, List<Power> powers) {
-        return new FactorImpl(coefficient, powers);
+        List<Power> list = new ArrayList<>();
+        Map<Variable, Integer> notNumbers = new LinkedHashMap<>();
+        for (Power e : powers)
+            switch (e) {
+                case Number n:
+                    coefficient *= n.value;
+                    break;
+                case Variable v:
+                    notNumbers.compute(v, (x, y) -> y == null ? 1 : y + 1);
+                    break;
+                case PowerImpl p:
+                    switch (p.primary) {
+                        case Variable v:
+                            notNumbers.compute(v, (x, y) -> y == null ? p.power : y + p.power);
+                            break;
+                        default:
+                            list.add(e);
+                            break;
+                    }
+                    break;
+                default:
+                    list.add(e);
+                    break;
+            }
+            for (Entry<Variable, Integer> e : notNumbers.entrySet())
+                list.add(e.getValue() == 1
+                    ? e.getKey()
+                    : PowerImpl.of(e.getValue(), e.getKey()));
+        return new FactorImpl(coefficient, list);
     }
 
     @Override
