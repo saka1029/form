@@ -19,8 +19,9 @@ public class TestPolynomial {
         assertEquals(parse("a+b"), parse("a+b"));
         assertEquals(parse("a/b"), parse("a/b"));
         assertEquals(parse("a+b+a"), parse("a+b+a"));
+        assertEquals(parse("a+b+a"), parse("a+a+b"));
         assertEquals(parse("a+3b"), parse("a+3b"));
-        assertEquals(parse("a-3b"), parse("a-3b"));
+        assertEquals(parse("a-3b"), parse("-3b+a"));
         assertEquals(parse("-a-3b"), parse("-a-3b"));
         assertEquals(parse("a^2+b"), parse("a^2+b"));
         assertEquals(parse("a^2+b+a^3"), parse("a^2+b+a^3"));
