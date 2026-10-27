@@ -99,7 +99,6 @@ public class Parser {
         } else if (isDigit(ch)) {
             return Number.of(parseNumber());
         } else
-            // return new Paren(read());
             throw new FormException(("variable, number or '(' expected"));
     }
 
@@ -136,15 +135,6 @@ public class Parser {
             else
                 break;
         return TermImpl.of(sign, numerators, denominators);
-        // Factor num = numerators.size() == 1 && sign == 1
-        //     ? numerators.getFirst()
-        //     : new FactorImpl(sign, numerators);
-        // Factor den = denominators.size() == 0
-        //     ? Number.ONE
-        //     : denominators.size() == 1
-        //         ? denominators.getFirst()
-        //         : new FactorImpl(1, denominators);
-        // return den == Number.ONE ? num : new TermImpl(num, den);
     }
 
     Polynomial parsePolynomial() {
