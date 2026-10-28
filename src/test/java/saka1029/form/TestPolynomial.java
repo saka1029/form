@@ -83,7 +83,7 @@ public class TestPolynomial {
     public void testFactorToLisp() {
         assertEquals("8", parse("2^3").toLisp());
         assertEquals("(* 6 a)", parse("2a3").toLisp());
-        assertEquals("(* 9 (^ a 6))", parse("a^3a^2*3^2a").toLisp());
+        assertEquals("(* 9 (^ a 6))", parse("a^3 a^2 3^2 a").toLisp());
     }
     
     @Test 
