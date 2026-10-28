@@ -20,22 +20,22 @@ public class FactorImpl implements Factor {
 
     public static Factor of(int coefficient, List<Power> powers) {
         List<Power> list = new ArrayList<>();
-        Map<Primary, Integer> varPowers = new LinkedHashMap<>();
+        Map<Primary, Integer> primayPowers = new LinkedHashMap<>();
         for (Power e : powers)
             switch (e) {
                 case Number n:
                     coefficient *= n.value;
                     break;
                 case Primary p:     // Variable or Paren
-                    varPowers.compute(p, (x, y) -> y == null ? 1 : y + 1);
+                    primayPowers.compute(p, (x, y) -> y == null ? 1 : y + 1);
                     break;
                 case PowerImpl p:
-                    varPowers.compute(p.primary, (x, y) -> y == null ? p.power : y + p.power);
+                    primayPowers.compute(p.primary, (x, y) -> y == null ? p.power : y + p.power);
                     break;
                 default:
                     throw new FormException("unknown type of '%s", e);
             }
-            for (Entry<Primary, Integer> e : varPowers.entrySet())
+            for (Entry<Primary, Integer> e : primayPowers.entrySet())
                 list.add(e.getValue() == 1
                     ? e.getKey()
                     : PowerImpl.of(e.getValue(), e.getKey()));
