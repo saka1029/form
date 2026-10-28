@@ -26,11 +26,8 @@ public class FactorImpl implements Factor {
                 case Number n:
                     coefficient *= n.value;
                     break;
-                case Variable v:
-                    varPowers.compute(v, (x, y) -> y == null ? 1 : y + 1);
-                    break;
-                case Paren r:
-                    varPowers.compute(r, (x, y) -> y == null ? 1 : y + 1);
+                case Primary p:     // Variable or Paren
+                    varPowers.compute(p, (x, y) -> y == null ? 1 : y + 1);
                     break;
                 case PowerImpl p:
                     varPowers.compute(p.primary, (x, y) -> y == null ? p.power : y + p.power);
