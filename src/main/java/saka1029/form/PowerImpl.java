@@ -5,15 +5,15 @@ import java.util.Objects;
 
 public class PowerImpl implements Power {
 
-    public final int power;
+    public final long power;
     public final Primary primary;
 
-    private PowerImpl(int power, Primary primary) {
+    private PowerImpl(long power, Primary primary) {
         this.power = power;
         this.primary = primary;
     }
 
-    public static Power of(int power, Primary primary) {
+    public static Power of(long power, Primary primary) {
         return power == 1
             ? primary
             : primary instanceof Number n
@@ -22,7 +22,7 @@ public class PowerImpl implements Power {
     }
 
     @Override
-    public int value(Map<Variable, Integer> context) {
+    public long value(Map<Variable, Long> context) {
         return (int) Math.pow(primary.value(context), power);
     }
 

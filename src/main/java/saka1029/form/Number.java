@@ -7,28 +7,28 @@ public class Number implements Primary {
     public static final Number ONE = new Number(1);
     public static final Number MINUS_ONE = new Number(-1);
 
-    public final int value;
+    public final long value;
 
-    private Number(int value) {
+    private Number(long value) {
         this.value = value;
     }
 
-    public static Primary of(int value) {
+    public static Primary of(long value) {
         return new Number(value);
     }
 
-    public Number multiply(int n) {
+    public Number multiply(long n) {
         return new Number(n * value);
     }
 
     @Override
-    public int value(Map<Variable, Integer> context) {
+    public long value(Map<Variable, Long> context) {
         return value;
     }
 
     @Override
     public String toLisp() {
-        return Integer.toString(value);
+        return Long.toString(value);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Number implements Primary {
 
     @Override
     public int hashCode() {
-        return value;
+        return Long.hashCode(value);
     }
 
     @Override

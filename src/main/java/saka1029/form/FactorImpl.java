@@ -10,17 +10,17 @@ import static saka1029.form.Common.*;
 
 public class FactorImpl implements Factor {
 
-    public final int coefficient;
-    public final Map<Power, Integer> powers;
+    public final long coefficient;
+    public final Map<Power, Long> powers;
 
-    private FactorImpl(int coefficient, List<Power> powers) {
+    private FactorImpl(long coefficient, List<Power> powers) {
         this.coefficient = coefficient;
         this.powers = toBag(powers);
     }
 
-    public static Factor of(int coefficient, List<Power> powers) {
+    public static Factor of(long coefficient, List<Power> powers) {
         List<Power> list = new ArrayList<>();
-        Map<Primary, Integer> primayPowers = new LinkedHashMap<>();
+        Map<Primary, Long> primayPowers = new LinkedHashMap<>();
         for (Power e : powers)
             switch (e) {
                 case Number n:
@@ -35,7 +35,7 @@ public class FactorImpl implements Factor {
                 default:
                     throw new FormException("unknown type of '%s", e);
             }
-            for (Entry<Primary, Integer> e : primayPowers.entrySet())
+            for (Entry<Primary, Long> e : primayPowers.entrySet())
                 list.add(e.getValue() == 1
                     ? e.getKey()
                     : PowerImpl.of(e.getValue(), e.getKey()));
@@ -43,8 +43,8 @@ public class FactorImpl implements Factor {
     }
 
     @Override
-    public int value(Map<Variable, Integer> context) {
-        int result = coefficient;
+    public long value(Map<Variable, Long> context) {
+        long result = coefficient;
         for (Power e : toList(powers))
             result *= e.value(context);
         return result;

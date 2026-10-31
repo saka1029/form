@@ -7,7 +7,7 @@ import static saka1029.form.Common.*;
 
 public class PolynomialImpl implements Polynomial {
 
-    public final Map<Term, Integer> terms;
+    public final Map<Term, Long> terms;
 
     private PolynomialImpl(List<Term> terms) {
         this.terms = toBag(terms);
@@ -20,9 +20,9 @@ public class PolynomialImpl implements Polynomial {
     }
 
     @Override
-    public int value(Map<Variable, Integer> context) {
+    public long value(Map<Variable, Long> context) {
         return toList(terms).stream()
-            .mapToInt(t -> t.value(context))
+            .mapToLong(t -> t.value(context))
             .sum();
     }
 

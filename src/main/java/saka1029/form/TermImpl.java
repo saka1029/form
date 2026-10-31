@@ -3,6 +3,8 @@ package saka1029.form;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Map.Entry;
+import static saka1029.form.Common.*;
 
 public class TermImpl implements Term {
 
@@ -14,7 +16,11 @@ public class TermImpl implements Term {
         this.denominator = denominator;
     }
 
-    public static Term of(int sign, List<Power> numerators, List<Power> denominators) {
+    static Term of(Factor numerator, Factor denominator) {
+        return new TermImpl(numerator, denominator);
+    }
+
+    public static Term of(long sign, List<Power> numerators, List<Power> denominators) {
         Factor num = numerators.size() == 1 && sign == 1
             ? numerators.getFirst()
             : FactorImpl.of(sign, numerators);
@@ -26,13 +32,36 @@ public class TermImpl implements Term {
         return den == Number.ONE ? num : new TermImpl(num, den);
     }
 
+    public static Entry<Factor, Long> splitCoefficient(Factor factor) {
+        return switch (factor) {
+            case FactorImpl f -> {
+                yield f.powers.size() == 1
+                    ? Map.entry(toList(f.powers).getFirst(), f.coefficient)
+                    : Map.entry(FactorImpl.of(1, toList(f.powers)), f.coefficient);
+            }
+            default -> Map.entry(factor, 1L);
+        };
+    }
+
+    public static Entry<Term, long[]> splitCoefficient(Term term) {
+        return switch (term) {
+            case TermImpl t -> {
+                Entry<Factor, Long> num = splitCoefficient(t.numerator);
+                Entry<Factor, Long> den = splitCoefficient(t.denominator);
+                yield Map.entry(TermImpl.of(num.getKey(), den.getKey()),
+                    new long[] {num.getValue(), den.getValue()});
+            }
+            default -> Map.entry(term, new long[]{1, 1});
+        };
+    }
+
     @Override
     public String toString() {
         return "Term(%s, %s)".formatted( numerator, denominator);
     }
 
     @Override
-    public int value(Map<Variable, Integer> context) {
+    public long value(Map<Variable, Long> context) {
         return numerator.value(context) / denominator.value(context);
     }
 

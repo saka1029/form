@@ -3,7 +3,7 @@ package saka1029.form;
 import java.util.Map;
 
 public interface Polynomial {
-    int value(Map<Variable, Integer> context);
+    long value(Map<Variable, Long> context);
     // String toDebugString();
     String toLisp();
 }

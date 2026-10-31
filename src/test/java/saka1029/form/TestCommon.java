@@ -13,11 +13,11 @@ public class TestCommon {
     @Test 
     public void testToBag() {
         assertEquals(Map.of(), toBag(List.of()));
-        assertEquals(Map.of(1, 1), toBag(List.of(1)));
-        assertEquals(Map.of("a", 1), toBag(List.of("a")));
-        assertEquals(Map.of(1, 2, 2, 1), toBag(List.of(1, 1, 2)));
-        assertEquals(Map.of(1, 2, 2, 3), toBag(List.of(1, 2, 2, 1, 2)));
-        assertEquals(Map.of("a", 2, "b", 1), toBag(List.of("a", "a", "b")));
+        assertEquals(Map.of(1L, 1L), toBag(List.of(1L)));
+        assertEquals(Map.of("a", 1L), toBag(List.of("a")));
+        assertEquals(Map.of(1, 2L, 2, 1L), toBag(List.of(1, 1, 2)));
+        assertEquals(Map.of(1, 2L, 2, 3L), toBag(List.of(1, 2, 2, 1, 2)));
+        assertEquals(Map.of("a", 2L, "b", 1L), toBag(List.of("a", "a", "b")));
         assertEquals(toBag(List.of("b", "a", "a")), toBag(List.of("a", "a", "b")));
     }
 

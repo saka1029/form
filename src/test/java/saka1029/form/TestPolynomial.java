@@ -88,10 +88,10 @@ public class TestPolynomial {
     
     @Test 
     public void testValue() {
-        Map<Variable, Integer> context = Map.of(
-            Variable.of("a"), 2,
-            Variable.of("b"), 3,
-            Variable.of("c"), 4
+        Map<Variable, Long> context = Map.of(
+            Variable.of("a"), 2L,
+            Variable.of("b"), 3L,
+            Variable.of("c"), 4L
         );
         assertEquals(2, parse("a").value(context));
         assertEquals(6, parse("ab").value(context));

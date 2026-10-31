@@ -23,7 +23,7 @@ public class Paren implements Primary {
     }
 
     @Override
-    public int value(Map<Variable, Integer> context) {
+    public long value(Map<Variable, Long> context) {
         return polynomial.value(context);
     }
 
