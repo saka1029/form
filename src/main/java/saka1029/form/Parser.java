@@ -7,11 +7,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * polynomial = terms
- * terms      = term { ( '+' | '-' ) term }
- * term       = [ int ] factor { [ '/' ] factor }
- * factor     = primary [ '^' int ]
- * primary    = variable | '(' polynomial ')'
+ * polynomial = [ '-' ] term { ( '+' | '-' ) term }
+ * term       = factor { ( '/' | [ '*' ] )  factor }
+ * factor     = power { power }
+ * power      = primary [ '^' [ '+' | '-' ] number ]
+ * primary    = variable | number | '(' polynomial ')'
+ * variable   = 'a' ... 'z' | 'A' ... 'Z'
+ * number     = digit { digit }
+ * digit      = '0' ... '9'
  */
 public class Parser {
 
@@ -77,13 +80,13 @@ public class Parser {
         return isDigit(ch) || isVariable(ch) || ch == '(';
     }
 
-    int parseNumber() {
+    long parseNumber() {
         sb.setLength(0);
         while (isDigit(ch)) {
             sb.appendCodePoint(ch);
             get();
         }
-        return Integer.parseInt(sb.toString());
+        return Long.parseLong(sb.toString());
     }
 
     Primary parsePrimary() {
@@ -106,8 +109,8 @@ public class Parser {
         spaces();
         Primary primary = parsePrimary();
         if (eat('^')) {
-            int sign = eat('-') ? -1 : eat('+') ? 1 : 1;
-            int power = sign * parseNumber();
+            long sign = eat('-') ? -1 : eat('+') ? 1 : 1;
+            long power = sign * parseNumber();
             return PowerImpl.of(power, primary);
         }
         return primary;
@@ -122,7 +125,7 @@ public class Parser {
         return powers;
     }
 
-    Term parseTerm(int sign) {
+    Term parseTerm(long sign) {
         spaces();
         LinkedList<Power> numerators = new LinkedList<>();
         LinkedList<Power> denominators = new LinkedList<>();
@@ -140,16 +143,16 @@ public class Parser {
     Polynomial parsePolynomial() {
         spaces();
         LinkedList<Term> terms = new LinkedList<>();
-        int sign = 1;
+        long sign = 1;
         if (eat('-'))
             sign = -1;
         terms.add(parseTerm(sign));
         spaces();
         while (true)
             if (eat('+'))
-                terms.add(parseTerm(1));
+                terms.add(parseTerm(1L));
             else if (eat('-'))
-                terms.add(parseTerm(-1));
+                terms.add(parseTerm(-1L));
             else
                 break;
         return PolynomialImpl.of(terms);

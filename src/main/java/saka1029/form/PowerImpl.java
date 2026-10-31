@@ -17,13 +17,13 @@ public class PowerImpl implements Power {
         return power == 1
             ? primary
             : primary instanceof Number n
-                ? Number.of((int)Math.pow(n.value, power))
+                ? Number.of((long)Math.pow(n.value, power))
                 : new PowerImpl(power, primary);
     }
 
     @Override
     public long value(Map<Variable, Long> context) {
-        return (int) Math.pow(primary.value(context), power);
+        return (long) Math.pow(primary.value(context), power);
     }
 
     @Override
