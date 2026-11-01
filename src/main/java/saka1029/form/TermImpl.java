@@ -43,15 +43,19 @@ public class TermImpl implements Term {
         };
     }
 
-    public static Entry<Term, long[]> splitCoefficient(Term term) {
+    public static Entry<Term, Rational> splitCoefficient(Term term) {
         return switch (term) {
+            case FactorImpl f -> {
+                Entry<Factor, Long> ff = splitCoefficient(f);
+                yield Map.entry(ff.getKey(), Rational.of(ff.getValue(), 1));
+            }
             case TermImpl t -> {
                 Entry<Factor, Long> num = splitCoefficient(t.numerator);
                 Entry<Factor, Long> den = splitCoefficient(t.denominator);
                 yield Map.entry(TermImpl.of(num.getKey(), den.getKey()),
-                    new long[] {num.getValue(), den.getValue()});
+                    Rational.of(num.getValue(), den.getValue()));
             }
-            default -> Map.entry(term, new long[]{1, 1});
+            default -> Map.entry(term, Rational.ONE);
         };
     }
 
