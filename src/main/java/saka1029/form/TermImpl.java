@@ -1,90 +1,56 @@
 package saka1029.form;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Map.Entry;
-import static saka1029.form.Common.*;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class TermImpl implements Term {
 
-    public final Factor numerator;
-    public final Factor denominator;
+    public final Rational coefficient;
+    public final Set<Factor> factors;
 
-    private TermImpl(Factor numerator, Factor denominator) {
-        this.numerator = numerator;
-        this.denominator = denominator;
+    private TermImpl(Rational coefficient, Set<Factor> factors) {
+        this.coefficient = coefficient;
+        this.factors = factors;
     }
 
-    static Term of(Factor numerator, Factor denominator) {
-        return new TermImpl(numerator, denominator);
-    }
-
-    public static Term of(long sign, List<Power> numerators, List<Power> denominators) {
-        Factor num = numerators.size() == 1 && sign == 1
-            ? numerators.getFirst()
-            : FactorImpl.of(sign, numerators);
-        Factor den = denominators.size() == 0
-            ? Number.ONE
-            : denominators.size() == 1
-                ? denominators.getFirst()
-                : FactorImpl.of(1, denominators);
-        return den == Number.ONE ? num : new TermImpl(num, den);
-    }
-
-    public static Entry<Factor, Long> splitCoefficient(Factor factor) {
-        return switch (factor) {
-            case FactorImpl f -> {
-                yield f.powers.size() == 1
-                    ? Map.entry(toList(f.powers).getFirst(), f.coefficient)
-                    : Map.entry(FactorImpl.of(1, toList(f.powers)), f.coefficient);
-            }
-            default -> Map.entry(factor, 1L);
-        };
-    }
-
-    public static Entry<Term, Rational> splitCoefficient(Term term) {
-        return switch (term) {
-            case FactorImpl f -> {
-                Entry<Factor, Long> ff = splitCoefficient(f);
-                yield Map.entry(ff.getKey(), Rational.of(ff.getValue(), 1));
-            }
-            case TermImpl t -> {
-                Entry<Factor, Long> num = splitCoefficient(t.numerator);
-                Entry<Factor, Long> den = splitCoefficient(t.denominator);
-                yield Map.entry(TermImpl.of(num.getKey(), den.getKey()),
-                    Rational.of(num.getValue(), den.getValue()));
-            }
-            default -> Map.entry(term, Rational.ONE);
-        };
+    static Term of(Rational coefficient, Set<Factor> factors) {
+        return new TermImpl(coefficient, factors);
     }
 
     @Override
     public String toString() {
-        return "Term(%s, %s)".formatted( numerator, denominator);
+        return "Term(%s, %s)".formatted(coefficient, factors);
     }
 
     @Override
-    public long value(Map<Variable, Long> context) {
-        return numerator.value(context) / denominator.value(context);
+    public Rational value(Map<Variable, Rational> context) {
+        return factors.stream()
+            .map(x -> x.value(context))
+            .reduce(Rational.ONE, (a, b) -> a.multiply(b));
     }
 
     @Override
     public String toLisp() {
-        return denominator.equals(Number.ONE)
-            ? "(+ %s)".formatted(numerator.toLisp())
-            : "(+ (/ %s %s))".formatted(numerator.toLisp(), denominator.toLisp());
+        return "(* %s%s)".formatted(
+            coefficient.equals(Rational.ONE)
+                ? ""
+                : coefficient + " ",
+            factors.stream()
+            .map(x -> x.toString())
+            .collect(Collectors.joining(" ")));
     }
 
     @Override
     public boolean equals(Object obj) {
         return obj instanceof TermImpl t
-            && t.numerator.equals(numerator)
-            && t.denominator.equals(denominator);
+            && t.coefficient.equals(coefficient)
+            && t.factors.equals(factors);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numerator, denominator);
+        return Objects.hash(factors);
     }
 }
