@@ -7,47 +7,44 @@ import java.util.stream.Collectors;
 
 public class FactorImpl implements Factor {
 
-    public final Set<Power> numerators;
-    public final Set<Power> denominators;
+    public final Set<Power> powers;
 
-    private FactorImpl(Set<Power> numerators, Set<Power> denominators) {
-        this.numerators = numerators;
-        this.denominators = denominators;
+    private FactorImpl(Set<Power> powers) {
+        this.powers = powers;
+    }
+
+    public static FactorImpl of(Set<Power> powers) {
+        return new FactorImpl(powers);
     }
 
     @Override
     public Rational value(Map<Variable, Rational> context) {
         Rational result = Rational.ONE;
-        for (Power e : numerators)
+        for (Power e : powers)
             result = result.multiply(e.value(context));
-        for (Power e : denominators)
-            result = result.divide(e.value(context));
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         return obj instanceof FactorImpl f
-            && f.numerators.equals(numerators)
-            && f.denominators.equals(denominators);
+            && f.powers.equals(powers);
     }
 
     @Override
     public String toLisp() {
-        return "(/ (* %s) (* %s)".formatted(
-            numerators.stream().map(Polynomial::toLisp)
-                .collect(Collectors.joining(" ")),
-            denominators.stream().map(Polynomial::toLisp)
+        return "(* %s)".formatted(
+            powers.stream().map(Polynomial::toLisp)
                 .collect(Collectors.joining(" ")));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numerators, denominators);
+        return Objects.hash(powers);
     }
 
     @Override
     public String toString() {
-        return "Factor(%s, %s)".formatted(numerators, denominators);
+        return "Factor(%s)".formatted(powers);
     }
 }

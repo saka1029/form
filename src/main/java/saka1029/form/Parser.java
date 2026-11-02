@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * polynomial = [ '-' ] term { ( '+' | '-' ) term }
@@ -122,15 +125,23 @@ public class Parser {
     Entry<Factor, Long> parseFactor() {
         spaces();
         Map<Primary, Long> powers = new LinkedHashMap<>();
-        Entry<Primary, Long> first = parsePower();
-        powers.compute(first.getKey(),
-            (k, v) -> v == null ? first.getValue() : v + first.getValue());
-        while (isFactor(ch)) {
-            Entry<Primary, Long> next = parsePower();
-            powers.compute(next.getKey(),
-                (k, v) -> v == null ? next.getValue() : v + next.getValue());
-        }
-        return powers;
+        Long coefficient = 1L;
+        do {
+            Entry<Primary, Long> power = parsePower();
+            switch (power) {
+                case Number n:
+                    coefficient *= n.value;
+                default:
+                    powers.compute(power.getKey(),
+                        (k, v) -> v == null
+                            ? power.getValue()
+                            : v + power.getValue());
+            }
+        } while (isFactor(ch));
+        Set<Power> powerSet = powers.entrySet().stream()
+            .map(e -> PowerImpl.of(e.getValue(), e.getKey()))
+            .collect(Collectors.toCollection(LinkedHashSet::new));
+        return Map.entry(FactorImpl.of(powerSet), coefficient);
     }
 
     Term parseTerm(long sign) {
