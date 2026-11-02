@@ -7,48 +7,47 @@ import java.util.stream.Collectors;
 
 public class FactorImpl implements Factor {
 
-    public final boolean multiply;
-    public final Set<Power> powers;
+    public final Set<Power> numerators;
+    public final Set<Power> denominators;
 
-    private FactorImpl(boolean multiply, Set<Power> powers) {
-        this.multiply = multiply;
-        this.powers = powers;
+    private FactorImpl(Set<Power> numerators, Set<Power> denominators) {
+        this.numerators = numerators;
+        this.denominators = denominators;
     }
 
     @Override
     public Rational value(Map<Variable, Rational> context) {
         Rational result = Rational.ONE;
-        for (Power e : powers)
-            result = multiply
-                ? result.multiply(e.value(context))
-                : result.divide(e.value(context));
+        for (Power e : numerators)
+            result = result.multiply(e.value(context));
+        for (Power e : denominators)
+            result = result.divide(e.value(context));
         return result;
     }
 
     @Override
     public boolean equals(Object obj) {
         return obj instanceof FactorImpl f
-            && f.multiply == multiply
-            && f.powers.equals(powers);
+            && f.numerators.equals(numerators)
+            && f.denominators.equals(denominators);
     }
 
-    /**
-     * TODO: multiply == false の場合に対応していない
-     */
     @Override
     public String toLisp() {
-        return "(* %s)".formatted(powers.stream()
-            .map(x -> x.toLisp())
-            .collect(Collectors.joining(" ")));
+        return "(/ (* %s) (* %s)".formatted(
+            numerators.stream().map(Polynomial::toLisp)
+                .collect(Collectors.joining(" ")),
+            denominators.stream().map(Polynomial::toLisp)
+                .collect(Collectors.joining(" ")));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(powers);
+        return Objects.hash(numerators, denominators);
     }
 
     @Override
     public String toString() {
-        return "Factor(%s, %s)".formatted(multiply, powers);
+        return "Factor(%s, %s)".formatted(numerators, denominators);
     }
 }

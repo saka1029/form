@@ -4,6 +4,5 @@ import java.util.Map;
 
 public interface Polynomial {
     Rational value(Map<Variable, Rational> context);
-    // String toDebugString();
     String toLisp();
 }

@@ -12,11 +12,10 @@ TermImpl .left.|> Term
 TermImpl --> "*" Factor : factors
 interface Factor
 Factor -|> Term
-class FactorImpl {
-    boolean multiply
-}
+class FactorImpl
 FactorImpl .left.|> Factor
-FactorImpl --> "*" Power : powers
+FactorImpl --> "*" Power : numerators
+FactorImpl --> "*" Power : denominators
 interface Power
 Power -|> Factor
 class PowerImpl {
