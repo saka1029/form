@@ -5,21 +5,22 @@ PolynomialImpl .left.|> Polynomial
 PolynomialImpl --> "*" Term : terms
 interface Term
 Term -|> Polynomial
-class TermImpl
+class TermImpl {
+    Rational coefficient
+}
 TermImpl .left.|> Term
-TermImpl --> "1" Factor : numerator
-TermImpl --> "1" Factor : denominator
+TermImpl --> "*" Factor : factors
 interface Factor
 Factor -|> Term
 class FactorImpl {
-    int coefficient
+    boolean multiply
 }
 FactorImpl .left.|> Factor
 FactorImpl --> "*" Power : powers
 interface Power
 Power -|> Factor
 class PowerImpl {
-    int power
+    long power
 }
 PowerImpl .left.|> Power
 PowerImpl --> "1" Primary : primary

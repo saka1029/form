@@ -2,7 +2,7 @@
 
 ```
 polynomial = [ '-' ] term { ( '+' | '-' ) term }
-term       = factor { ( '/' | [ '*' ] )  factor }
+term       = factor { ( [ '/' | '*' ] )  factor }
 factor     = power { power }
 power      = primary [ '^' [ '+' | '-' ] number ]
 primary    = variable | number | '(' polynomial ')'
@@ -17,3 +17,11 @@ variable | '+' | '-' | digit | '('
 ### power
 variable | '+' | '-' | digit | '('
 
+
+## Parser
+
+### Polynomial parsePolynomial()
+### Term parseTerm(long sign)
+### Entry<Factor, Long> parseFactor(boolean multiply)
+### Power parsePower()
+### Primary parsePrimary()
