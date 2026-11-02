@@ -70,6 +70,11 @@ public final class Rational extends java.lang.Number implements Comparable<Ratio
         return new Rational(numerator * r.denominator - r.numerator * denominator, denominator * r.denominator);
     }
 
+    public Rational pow(long power) {
+        return new Rational((long)Math.pow(numerator, power), (long)Math.pow(denominator, power));
+
+    }
+
     public boolean isNaN() { return denominator == 0 && numerator == 0; }
     public boolean isInfinite() { return numerator != 0 && denominator == 0; }
     public boolean isFinite() { return denominator != 0; }

@@ -22,8 +22,8 @@ public class Number implements Primary {
     }
 
     @Override
-    public long value(Map<Variable, Long> context) {
-        return value;
+    public Rational value(Map<Variable, Rational> context) {
+        return Rational.of(value);
     }
 
     @Override

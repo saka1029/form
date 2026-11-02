@@ -9,13 +9,13 @@ class TermImpl {
     Rational coefficient
 }
 TermImpl .left.|> Term
-TermImpl --> "*" Factor : factors
+TermImpl --> "*" Factor : numerators
+TermImpl --> "*" Factor : denominators
 interface Factor
 Factor -|> Term
 class FactorImpl
 FactorImpl .left.|> Factor
-FactorImpl --> "*" Power : numerators
-FactorImpl --> "*" Power : denominators
+FactorImpl --> "*" Power : powers
 interface Power
 Power -|> Factor
 class PowerImpl {

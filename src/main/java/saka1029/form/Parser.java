@@ -3,8 +3,11 @@ package saka1029.form;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * polynomial = [ '-' ] term { ( '+' | '-' ) term }
@@ -105,23 +108,28 @@ public class Parser {
             throw new FormException(("variable, number or '(' expected"));
     }
 
-    Power parsePower() {
+    Entry<Primary, Long> parsePower() {
         spaces();
         Primary primary = parsePrimary();
+        long power = 1L;
         if (eat('^')) {
             long sign = eat('-') ? -1 : eat('+') ? 1 : 1;
-            long power = sign * parseNumber();
-            return PowerImpl.of(power, primary);
+            power = sign * parseNumber();
         }
-        return primary;
+        return Map.entry(primary, power);
     }
 
-    List<Power> parseFactor() {
+    Entry<Factor, Long> parseFactor() {
         spaces();
-        LinkedList<Power> powers = new LinkedList<>();
-        powers.add(parsePower());
-        while (isFactor(ch))
-            powers.add(parsePower());
+        Map<Primary, Long> powers = new LinkedHashMap<>();
+        Entry<Primary, Long> first = parsePower();
+        powers.compute(first.getKey(),
+            (k, v) -> v == null ? first.getValue() : v + first.getValue());
+        while (isFactor(ch)) {
+            Entry<Primary, Long> next = parsePower();
+            powers.compute(next.getKey(),
+                (k, v) -> v == null ? next.getValue() : v + next.getValue());
+        }
         return powers;
     }
 

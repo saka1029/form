@@ -17,7 +17,7 @@ public class Variable implements Primary {
     }
 
     @Override
-    public long value(Map<Variable, Long> context) {
+    public Rational value(Map<Variable, Rational> context) {
         if (!context.containsKey(this))
             throw new FormException("variable '%s' not define", name);
         return context.get(this);

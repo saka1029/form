@@ -22,8 +22,8 @@ public class PowerImpl implements Power {
     }
 
     @Override
-    public long value(Map<Variable, Long> context) {
-        return (long) Math.pow(primary.value(context), power);
+    public Rational value(Map<Variable, Rational> context) {
+        return primary.value(context).pow(power);
     }
 
     @Override
