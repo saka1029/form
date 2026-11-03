@@ -128,9 +128,9 @@ public class Parser {
         Long coefficient = 1L;
         do {
             Entry<Primary, Long> power = parsePower();
-            switch (power) {
+            switch (power.getKey()) {
                 case Number n:
-                    coefficient *= n.value;
+                    coefficient *= (long) Math.pow(n.value, power.getValue());
                 default:
                     powers.compute(power.getKey(),
                         (k, v) -> v == null
