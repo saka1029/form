@@ -88,26 +88,26 @@ public class TestPolynomial {
     
     @Test 
     public void testValue() {
-        Map<Variable, Long> context = Map.of(
-            Variable.of("a"), 2L,
-            Variable.of("b"), 3L,
-            Variable.of("c"), 4L
+        Map<Variable, Rational> context = Map.of(
+            Variable.of("a"), Rational.of(2L),
+            Variable.of("b"), Rational.of(3L),
+            Variable.of("c"), Rational.of(4L)
         );
-        assertEquals(2, parse("a").value(context));
-        assertEquals(6, parse("ab").value(context));
-        assertEquals(6, parse("a*b").value(context));
-        assertEquals(4, parse("a^2").value(context));
-        assertEquals(4 * 27, parse("a^2b^3").value(context));
-        assertEquals(2, parse("a^1").value(context));
-        assertEquals(2, parse("(a)").value(context));
-        assertEquals(6, parse("(a)b").value(context));
-        assertEquals(5, parse("a + b").value(context));
-        assertEquals(1, parse("-a + b").value(context));
-        assertEquals(-5, parse("-a - b").value(context));
-        assertEquals(-14, parse("-a - bc").value(context));
-        assertEquals(25, parse("(a + b)(a+b)").value(context));
-        assertEquals(55, parse("(a + b^2)(a+b)").value(context));
-        assertEquals(0, parse("a / 3").value(context));
+        assertEquals(Rational.of(2), parse("a").value(context));
+        assertEquals(Rational.of(6), parse("ab").value(context));
+        assertEquals(Rational.of(6), parse("a*b").value(context));
+        assertEquals(Rational.of(4), parse("a^2").value(context));
+        assertEquals(Rational.of(4 * 27), parse("a^2b^3").value(context));
+        assertEquals(Rational.of(2), parse("a^1").value(context));
+        assertEquals(Rational.of(2), parse("(a)").value(context));
+        assertEquals(Rational.of(6), parse("(a)b").value(context));
+        assertEquals(Rational.of(5), parse("a + b").value(context));
+        assertEquals(Rational.of(1), parse("-a + b").value(context));
+        assertEquals(Rational.of(-5), parse("-a - b").value(context));
+        assertEquals(Rational.of(-14), parse("-a - bc").value(context));
+        assertEquals(Rational.of(25), parse("(a + b)(a+b)").value(context));
+        assertEquals(Rational.of(55), parse("(a + b^2)(a+b)").value(context));
+        assertEquals(Rational.of(0), parse("a / 3").value(context));
         try {
             parse("x").value(context);
             fail();

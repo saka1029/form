@@ -21,7 +21,7 @@ variable | '+' | '-' | digit | '('
 ## Parser
 
 ### Polynomial parsePolynomial()
-### Term parseTerm(long sign)
+### Entry<Entry<Set<Factor>, Set<Factor>>, Rational> parseTerm(long sign)
 ### Entry<Factor, Long> parseFactor(boolean multiply)
 ### Entry<Primary, Long> parsePower()
 ### Primary parsePrimary()
