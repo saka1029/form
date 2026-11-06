@@ -43,10 +43,7 @@ public class PolynomialImpl implements Polynomial {
         else
             switch (term) {
                 case Factor f:
-                    if (coefficient.equals(Rational.ONE))
-                        return f;
-                    else
-                        return TermImpl.of(coefficient, Set.of(f), Set.of());
+                    return TermImpl.of(coefficient, Set.of(f), Set.of());
                 case TermImpl t:
                     return TermImpl.of(coefficient, t.numerators, t.denominators);
                 default:
