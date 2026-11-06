@@ -8,6 +8,7 @@ import static saka1029.form.Parser.*;
 import java.util.Map;
 
 import org.junit.Test;
+import org.junit.platform.commons.annotation.Testable;
 
 public class TestPolynomial {
 
@@ -28,7 +29,15 @@ public class TestPolynomial {
         assertEquals(parse("a^2+b+a^2-c"), parse("a^2+b+a^2-c"));
         assertEquals(parse("a"), parse("(a)"));
         assertEquals(parse("aa"), parse("a(a)"));
+    }
+
+    @Test
+    public void testEquals2() {
         assertEquals(parse("aa"), parse("a*a"));
+    }
+
+    @Test
+    public void testEquals3() {
         assertEquals(parse("2aa3"), parse("2a*3a"));
         assertEquals(parse("6aa"), parse("2a*3a"));
         assertEquals(parse("a(a+1)"), parse("a(a+1)"));

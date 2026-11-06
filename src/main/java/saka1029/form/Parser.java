@@ -120,7 +120,7 @@ public class Parser {
         return Map.entry(primary, power);
     }
 
-    static <T> void add(Map<T, Long> map, Entry<T, Long> entry) {
+    static <T> void addLong(Map<T, Long> map, Entry<T, Long> entry) {
         map.compute(entry.getKey(),
             (k, v) -> v == null ? entry.getValue() : v + entry.getValue());
     }
@@ -146,37 +146,40 @@ public class Parser {
                     coefficient *= (long) Math.pow(n.value, power.getValue());
                     break;
                 default:
-                    add(powers, power);
+                    addLong(powers, power);
                     break;
             }
         } while (isFactor(ch));
-        Set<Power> powerSet = powers.entrySet().stream()
+        LinkedHashSet<Power> powerSet = powers.entrySet().stream()
             .map(e -> PowerImpl.of(e.getValue(), e.getKey()))
             .collect(Collectors.toCollection(LinkedHashSet::new));
-        return Map.entry(FactorImpl.of(powerSet), coefficient);
+        return powerSet.size() == 1
+            ? Map.entry(powerSet.getFirst(), coefficient)
+            : Map.entry(FactorImpl.of(powerSet), coefficient);
     }
 
     Entry<Entry<Set<Factor>, Set<Factor>>, Rational> parseTerm(long sign) {
         spaces();
         Map<Factor, Long> numerators = new LinkedHashMap<>();
         Map<Factor, Long> denominators = new LinkedHashMap<>();
-        multiply(numerators, parseFactor());
+        addLong(numerators, parseFactor());
         while (true)
             if (eat('*') || isFactor(ch))
-                multiply(numerators, parseFactor());
+                addLong(numerators, parseFactor());
             else if (eat('/'))
-                multiply(denominators, parseFactor());
+                addLong(denominators, parseFactor());
             else
                 break;
         Rational coefficient = Rational.of(sign *
             numerators.values().stream().reduce(1L, (a, b) -> a * b),
             denominators.values().stream().reduce(1L, (a, b) -> a * b));
+        System.out.printf("num=%s den=%s coef=%s%n", numerators, denominators, coefficient);
         return Map.entry(Map.entry(numerators.keySet(), denominators.keySet()), coefficient);
     }
 
     Polynomial parsePolynomial() {
         spaces();
-        Map<Entry<Set<Factor>, Set<Factor>>, Rational> terms = new LinkedHashMap<>();
+        LinkedHashMap<Entry<Set<Factor>, Set<Factor>>, Rational> terms = new LinkedHashMap<>();
         long sign = 1;
         if (eat('-'))
             sign = -1;
@@ -189,9 +192,16 @@ public class Parser {
                 addRational(terms, parseTerm(-1L));
             else
                 break;
-        return PolynomialImpl.of(terms.entrySet().stream()
-            .map(x -> TermImpl.of(x.getValue(), x.getKey().getKey(), x.getKey().getValue()))
-            .collect(Collectors.toCollection(LinkedHashSet::new)));
+        if (terms.size() == 1) {
+            var first = terms.entrySet().iterator().next();
+            if (first.getKey().getKey().size() == 1 && first.getKey().getValue().isEmpty())
+                return first.getKey().getKey().iterator().next();
+            else
+                return TermImpl.of(first.getValue(), first.getKey().getKey(), first.getKey().getValue());
+        } else
+            return PolynomialImpl.of(terms.entrySet().stream()
+                .map(x -> TermImpl.of(x.getValue(), x.getKey().getKey(), x.getKey().getValue()))
+                .collect(Collectors.toCollection(LinkedHashSet::new)));
     }
 
     public Polynomial read() {
