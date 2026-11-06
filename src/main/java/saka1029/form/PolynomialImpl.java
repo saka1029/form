@@ -21,14 +21,14 @@ public class PolynomialImpl implements Polynomial {
         Map<Term, Rational> termsMap = new LinkedHashMap<>();
         for (Term term : terms) {
             switch (term) {
+                case Factor f:
+                    termsMap.compute(f, (k, v) -> v == null
+                        ? Rational.ONE : v.add(Rational.ONE));
+                    break;
                 case TermImpl t:
                     Term key = TermImpl.of(Rational.ONE, t.numerators, t.denominators);
                     termsMap.compute(key, (k, v) -> v == null
                         ? Rational.ONE : v.add(t.coefficient));
-                    break;
-                case Factor f:
-                    termsMap.compute(f, (k, v) -> v == null
-                        ? Rational.ONE : v.add(Rational.ONE));
                     break;
                 default:
                     throw new FormException("unknown type '%s'", term);
@@ -37,37 +37,31 @@ public class PolynomialImpl implements Polynomial {
         return termsMap;
     }
 
+    static Term toTerm(Term term, Rational coefficient) {
+        if (coefficient.equals(Rational.ONE))
+            return term;
+        else
+            switch (term) {
+                case Factor f:
+                    if (coefficient.equals(Rational.ONE))
+                        return f;
+                    else
+                        return TermImpl.of(coefficient, Set.of(f), Set.of());
+                case TermImpl t:
+                    return TermImpl.of(coefficient, t.numerators, t.denominators);
+                default:
+                    throw new FormException("unknown type '%s'", term);
+            }
+    }
+
     static Polynomial toPolynomial(Map<Term, Rational> termsMap) {
         if (termsMap.size() == 1) {
             Entry<Term, Rational> first = termsMap.entrySet().iterator().next();
-            if (first.getValue().equals(Rational.ONE))
-                return first.getKey();
-            else
-                switch (first.getKey()) {
-                    case TermImpl t:
-                        return TermImpl.of(first.getValue(), t.numerators, t.denominators);
-                    case Factor f:
-                        return TermImpl.of(first.getValue(), Set.of(f), Set.of());
-                    default:
-                        throw new FormException("unknown type '%s'", first.getKey());
-                }
+            return toTerm(first.getKey(), first.getValue());
         } else {
             Set<Term> terms = new LinkedHashSet<>();
-            for (Entry<Term, Rational> e : termsMap.entrySet()) {
-                switch (e.getKey()) {
-                    case TermImpl t:
-                        terms.add(TermImpl.of(e.getValue(), t.numerators, t.denominators));
-                        break;
-                    case Factor f:
-                        if (e.getValue().equals(Rational.ONE))
-                            terms.add(f);
-                        else
-                            terms.add(TermImpl.of(e.getValue(), Set.of(f), Set.of()));
-                        break;
-                    default:
-                        throw new FormException("unknown type '%s'", e.getKey());
-                }
-            }
+            for (Entry<Term, Rational> e : termsMap.entrySet())
+                terms.add(toTerm(e.getKey(), e.getValue()));
             return new PolynomialImpl(terms);
         }
     }
