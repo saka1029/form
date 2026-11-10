@@ -8,7 +8,6 @@ import static saka1029.form.Parser.*;
 import java.util.Map;
 
 import org.junit.Test;
-import org.junit.platform.commons.annotation.Testable;
 
 public class TestPolynomial {
 

@@ -1,0 +1,6 @@
+@startuml poly
+class Poly {
+    Map<String, Integer> variables;
+    Set<List<Long>>
+}
+@enduml
